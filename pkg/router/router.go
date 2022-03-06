@@ -30,7 +30,7 @@ func NewRouter() *gin.Engine {
 		apiV1.POST("/topic/insert", topic.Insert)
 		apiV1.POST("/topic/update", topic.Update)
 		apiV1.POST("/topic/delete", topic.Delete)
-		apiV1.POST("/topic/published" , topic.Published)
+		apiV1.POST("/topic/pubAndUnpub" , topic.Published)
 
 	}
 
