@@ -1,8 +1,0 @@
-server:
-  port: 9999
-db:
-  host: localhost
-  port: 3306
-  database: tblog
-  username: xxx
-  password: xxx
