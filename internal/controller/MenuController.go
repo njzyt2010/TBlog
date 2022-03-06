@@ -5,6 +5,7 @@ import (
 	"TBlog/internal/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 )
 
 type MenuController struct {
@@ -34,7 +35,7 @@ func (m MenuController) Insert(c *gin.Context) {
 func (m MenuController) Update(c *gin.Context) {
 	json := modules.Menu{}
 	c.BindJSON(&json)
-
+	json.UpdateTime = time.Now()
 	if err := service.UpdateMenu(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
@@ -50,10 +51,10 @@ func (m MenuController) Update(c *gin.Context) {
 }
 
 func (m MenuController) DeleteByIds(c *gin.Context) {
-	json :=make( map[string][]uint)
+	json := make(map[string][]uint)
 	c.BindJSON(&json)
 
-	if err := service.DeleteMenu(json["id"]);err !=nil {
+	if err := service.DeleteMenu(json["id"]); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -65,4 +66,13 @@ func (m MenuController) DeleteByIds(c *gin.Context) {
 			"msg":  "保存成功",
 		})
 	}
+}
+
+func (m MenuController) GetMenusOfBlog(c *gin.Context) {
+	data := service.GetMenusOfBlog()
+	c.JSON(http.StatusOK, gin.H{
+		"code":   "200",
+		"msg":    "查询成功",
+		"result": data,
+	})
 }

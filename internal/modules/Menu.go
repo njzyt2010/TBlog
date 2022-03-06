@@ -10,6 +10,7 @@ type Menu struct {
 	Model
 	Pid  uint64 `gorm:"column:pid_" json:"pid"`
 	Name string `gorm:"column:name_" json:"name"`
+	Sorted uint8 `gorm:"column:sorted_" json:"sorted"`
 }
 
 func (m Menu) TableName() string {
@@ -33,6 +34,7 @@ func (m Menu) Insert() (*Menu, error) {
 }
 
 func (m Menu) Update(values interface{}) error {
+
 	if err := database.DB.Model(&m).Where("id = ?", m.Id).Updates(values).Error; err != nil {
 		return err
 	}
@@ -44,4 +46,13 @@ func (m Menu) DeleteByIds(ids interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func (m Menu) GetMenusOfBlog() ([]Menu ,error) {
+	var menus []Menu
+	if err := database.DB.Model(&m).Where("deleted_ = ?", 0).Find(&menus).Error;err !=nil {
+		return nil ,err
+	}
+	return menus,nil
+
 }
