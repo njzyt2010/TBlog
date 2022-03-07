@@ -7,8 +7,8 @@ type Article struct {
 	Model
 	Title     string `gorm:"column:title_" json:"title"`         //文章标题
 	Content   string `gorm:"column:content_" json:"content"`     //内容
-	Original  bool   `gorm:"column:original_" json:"original"`   // 是否原创文章
-	Published bool   `gorm:"column:published_" json:"published"` //文章是否发布
+	Original  *bool   `gorm:"column:original_" json:"original"`   // 是否原创文章
+	Published *bool   `gorm:"column:published_" json:"published"` //文章是否发布
 }
 
 func (a Article) TableName() string {
