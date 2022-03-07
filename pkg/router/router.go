@@ -17,6 +17,7 @@ func NewRouter() *gin.Engine {
 	// 栏目
 	topic := controller.NewTopicController()
 	// 文章
+	article := controller.NewArticleController()
 	// 标签
 
 	apiV1 := router.Group("/api/v1")
@@ -31,7 +32,12 @@ func NewRouter() *gin.Engine {
 		apiV1.POST("/topic/update", topic.Update)
 		apiV1.POST("/topic/delete", topic.Delete)
 		apiV1.POST("/topic/pubAndUnpub" , topic.Published)
-
+		// 文章
+		apiV1.GET("/article/getById", article.GetById)
+		apiV1.POST("/article/insert", article.Insert)
+		apiV1.POST("/article/update", article.Update)
+		apiV1.POST("/article/delete", article.Delete)
+		apiV1.POST("/article/pubAndUnpub" , article.Published)
 	}
 
 	return router

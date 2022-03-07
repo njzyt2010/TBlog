@@ -29,4 +29,19 @@ create table t_topic (
         update_by varchar(20) default 0 comment '变更人' ,
         created_time datetime comment '创建时间' ,
         update_time datetime comment '变更时间'
-) comment '菜单';
+) comment '栏目';
+
+drop table if exists t_article ;
+create  table t_article(
+    id bigint(20) not null primary key auto_increment ,
+    title_ varchar(100) not null comment '标题' ,
+    content_ longtext comment '文章内容' ,
+    original_ tinyint(1) comment '是否原创' ,
+    published_ tinyint(1) default 0 comment '文章是否发布' ,
+    deleted_ tinyint(1) not null default 0 comment '是否删除。0=未删除，1=已删除',
+    created_by varchar(20) default 0 comment '创建人' ,
+    update_by varchar(20) default 0 comment '变更人' ,
+    created_time datetime comment '创建时间' ,
+    update_time datetime comment '变更时间'
+
+) comment '文章'

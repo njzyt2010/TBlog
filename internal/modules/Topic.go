@@ -38,7 +38,7 @@ func (t Topic) Update(values interface{}) (*Topic, error) {
 }
 
 //删除栏目
-func (t Topic) DeleteById(ids []uint) error {
+func (t Topic) DeleteById(ids interface{}) error {
 	if err := database.DB.Exec("UPDATE t_topic SET deleted_ = 1 WHERE id in (?)", ids).Error; err != nil {
 		return err
 	}
