@@ -7,21 +7,25 @@ type Article struct {
 	Model
 	Title     string `gorm:"column:title_" json:"title"`         //文章标题
 	Content   string `gorm:"column:content_" json:"content"`     //内容
-	Original  *bool   `gorm:"column:original_" json:"original"`   // 是否原创文章
-	Published *bool   `gorm:"column:published_" json:"published"` //文章是否发布
+	Original  *bool  `gorm:"column:original_" json:"original"`   // 是否原创文章
+	Published *bool  `gorm:"column:published_" json:"published"` //文章是否发布
+	TopicId   uint64 `gorm:"-"`                                  //文章所属栏目
 }
 
 func (a Article) TableName() string {
 	return "t_article"
 }
-func  NewArticle() Article {
+func NewArticle() Article {
 	return Article{}
 }
+
 // 新增文章
 func (a Article) Insert() (*Article, error) {
 	if err := database.DB.Create(&a).Error; err != nil {
 		return nil, err
 	}
+	topicArticle := TopicArticle{ArticleId: a.Id, TopicId: a.TopicId}
+	topicArticle.Insert()
 	return &a, nil
 }
 
@@ -30,6 +34,11 @@ func (a Article) Update(values interface{}) (*Article, error) {
 	if err := database.DB.Model(&a).Where("id = ?", a.Id).Updates(values).Error; err != nil {
 		return nil, err
 	}
+	topicArticle := TopicArticle{}
+	topicArticle.DeleteByArticleId(a.Id)
+	topicArticle.ArticleId = a.Id
+	topicArticle.TopicId = a.TopicId
+	topicArticle.Insert()
 	return &a, nil
 }
 func (a Article) Delete(ids interface{}) error {
@@ -46,7 +55,7 @@ func (a Article) GetById(id interface{}) (*Article, error) {
 }
 
 func (a Article) PubOrUnpubById() error {
-	if err := database.DB.Model(&a).Update("published_",a.Published).Error ; err !=nil {
+	if err := database.DB.Model(&a).Update("published_", a.Published).Error; err != nil {
 		return err
 	}
 	return nil

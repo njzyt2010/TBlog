@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	r :=router.NewRouter()
+	r := router.NewRouter()
 	port := config.GetServerConf().Port
 	server := &http.Server{
 		Addr:           ":" + port,

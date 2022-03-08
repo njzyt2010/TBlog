@@ -15,7 +15,7 @@ func (t Tag) TableName() string {
 	return "t_tag"
 }
 
-func  NewTag() Tag {
+func NewTag() Tag {
 	return Tag{}
 }
 
@@ -38,6 +38,7 @@ func (t Tag) Update(values interface{}) (*Tag, error) {
 	}
 	return &t, nil
 }
+
 // 删除标签
 func (t Tag) Delete(ids interface{}) error {
 	if err := database.DB.Exec("UPDATE t_tag SET deleted_ = 1 WHERE id IN (?)", ids).Error; err != nil {

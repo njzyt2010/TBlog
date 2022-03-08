@@ -11,7 +11,7 @@ import (
 
 func Debug(err interface{}) {
 	var buf bytes.Buffer
-	log.New(&buf,"[debug]" , log.Llongfile)
+	log.New(&buf, "[debug]", log.Llongfile)
 
 	log.Print(err)
 	fmt.Println(&buf)
@@ -19,21 +19,21 @@ func Debug(err interface{}) {
 
 func Info(err interface{}) {
 	var buf bytes.Buffer
-	log.New(&buf,"[info]",log.Lshortfile)
+	log.New(&buf, "[info]", log.Lshortfile)
 	log.Print(err)
 	fmt.Println(&buf)
 }
 
 func Warn(err interface{}) {
 	var buf bytes.Buffer
-	log.New(&buf,"[warn]",log.Llongfile)
+	log.New(&buf, "[warn]", log.Llongfile)
 	log.Print(err)
 	fmt.Println(&buf)
 }
 
 func Panic(err interface{}) {
 	var buf bytes.Buffer
-	log.New(&buf,"[panic]" , log.Llongfile)
+	log.New(&buf, "[panic]", log.Llongfile)
 	log.Print(err)
 	fmt.Println(&buf)
 }

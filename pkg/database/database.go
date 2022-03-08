@@ -10,9 +10,9 @@ import (
 
 var DB *gorm.DB
 
-func init()  {
+func init() {
 	dbConf := config.GetDbConf()
-	var username,password,host,port,database = dbConf.Username,dbConf.Password,dbConf.Host,dbConf.Port,dbConf.Database
+	var username, password, host, port, database = dbConf.Username, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Database
 
 	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8&parseTime=True&loc=Local",
 		username,
@@ -22,10 +22,10 @@ func init()  {
 		database,
 	)
 
-	db,err := gorm.Open(mysql.Open(dsn),&gorm.Config{
-		Logger:logger.Default.LogMode(logger.Info),
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
 	})
-	if err ==nil {
+	if err == nil {
 		DB = db
 	}
 }

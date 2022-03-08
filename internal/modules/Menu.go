@@ -8,9 +8,9 @@ import (
 // Menu 菜单
 type Menu struct {
 	Model
-	Pid  uint64 `gorm:"column:pid_" json:"pid"`
-	Name string `gorm:"column:name_" json:"name"`
-	Sorted uint8 `gorm:"column:sorted_" json:"sorted"`
+	Pid    uint64 `gorm:"column:pid_" json:"pid"`
+	Name   string `gorm:"column:name_" json:"name"`
+	Sorted uint8  `gorm:"column:sorted_" json:"sorted"`
 }
 
 func (m Menu) TableName() string {
@@ -42,17 +42,17 @@ func (m Menu) Update(values interface{}) error {
 }
 
 func (m Menu) DeleteByIds(ids interface{}) error {
-	if err:=database.DB.Exec("UPDATE t_menu SET deleted_ = 1 WHERE id IN(?)" ,ids).Error ; err !=nil {
+	if err := database.DB.Exec("UPDATE t_menu SET deleted_ = 1 WHERE id IN(?)", ids).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m Menu) GetMenusOfBlog() ([]Menu ,error) {
+func (m Menu) GetMenusOfBlog() ([]Menu, error) {
 	var menus []Menu
-	if err := database.DB.Model(&m).Where("deleted_ = ?", 0).Find(&menus).Error;err !=nil {
-		return nil ,err
+	if err := database.DB.Model(&m).Where("deleted_ = ?", 0).Find(&menus).Error; err != nil {
+		return nil, err
 	}
-	return menus,nil
+	return menus, nil
 
 }

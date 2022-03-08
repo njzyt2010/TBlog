@@ -18,9 +18,10 @@ type Topic struct {
 func (t Topic) TableName() string {
 	return "t_topic"
 }
-func NewTopic() Topic  {
+func NewTopic() Topic {
 	return Topic{}
 }
+
 // 新增栏目
 func (t Topic) Insert() (*Topic, error) {
 	if err := database.DB.Create(&t).Error; err != nil {
@@ -42,18 +43,24 @@ func (t Topic) DeleteById(ids interface{}) error {
 	if err := database.DB.Exec("UPDATE t_topic SET deleted_ = 1 WHERE id in (?)", ids).Error; err != nil {
 		return err
 	}
+	topicArticle := TopicArticle{}
+
+	var x = ids.([]uint)
+	for i := range x {
+		topicArticle.DeleteByTopicId(x[i])
+	}
 	return nil
 }
 
-func (t Topic) GetById(id uint) (*Topic,error)  {
-	if err := database.DB.First(&t,id).Error;err !=nil {
-		return nil,err
+func (t Topic) GetById(id uint) (*Topic, error) {
+	if err := database.DB.First(&t, id).Error; err != nil {
+		return nil, err
 	}
-	return &t , nil
+	return &t, nil
 }
 
 func (t Topic) PublishedById() error {
-	if err := database.DB.Model(&t).Update("published_",t.Published).Error ; err !=nil {
+	if err := database.DB.Model(&t).Update("published_", t.Published).Error; err != nil {
 		return err
 	}
 	return nil

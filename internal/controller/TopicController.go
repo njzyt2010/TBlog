@@ -71,13 +71,13 @@ func (t TopicController) Delete(c *gin.Context) {
 }
 
 func (t TopicController) GetById(c *gin.Context) {
-	if id ,err:= strconv.ParseUint( c.Query("id"),10,64);err !=nil {
+	if id, err := strconv.ParseUint(c.Query("id"), 10, 64); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "查询错误",
 			"result": nil,
 		})
-	}else {
+	} else {
 		topic := service.GetTopicById(uint(id))
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "200",
@@ -91,17 +91,17 @@ func (t TopicController) Published(c *gin.Context) {
 	json := modules.NewTopic()
 	c.BindJSON(&json)
 
-	if err := service.PublishedByTopic(json);err !=nil {
-		c.JSON(http.StatusOK,gin.H{
-			"code":"400",
-			"msg":"发布失败",
-			"result":nil,
+	if err := service.PublishedByTopic(json); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code":   "400",
+			"msg":    "发布失败",
+			"result": nil,
 		})
-	}else {
-		c.JSON(http.StatusOK,gin.H{
-			"code":"200",
-			"msg":"发布成功",
-			"result":nil,
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code":   "200",
+			"msg":    "发布成功",
+			"result": nil,
 		})
 	}
 }

@@ -40,7 +40,7 @@ func GetTopicById(id uint) *modules.Topic {
 }
 
 func PublishedByTopic(t modules.Topic) error {
-	if err := t.PublishedById();err !=nil {
+	if err := t.PublishedById(); err != nil {
 		return err
 	}
 	return nil

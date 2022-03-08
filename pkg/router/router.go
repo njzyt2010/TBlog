@@ -39,9 +39,9 @@ func NewRouter() *gin.Engine {
 		apiV1.POST("/article/delete", article.Delete)
 		apiV1.POST("/article/pubAndUnpub", article.Published)
 		//	标签
-		apiV1.POST("/tag/insert",tag.Insert)
-		apiV1.POST("/tag/update",tag.Update)
-		apiV1.POST("/tag/delete",tag.Delete)
+		apiV1.POST("/tag/insert", tag.Insert)
+		apiV1.POST("/tag/update", tag.Update)
+		apiV1.POST("/tag/delete", tag.Delete)
 	}
 
 	return router
