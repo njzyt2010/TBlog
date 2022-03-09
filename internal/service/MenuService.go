@@ -2,22 +2,35 @@ package service
 
 import (
 	"TBlog/internal/modules"
+	"TBlog/internal/repository"
 )
 
-func InsertMenu(menu modules.Menu) (*modules.Menu, error) {
-	return menu.Insert()
+var MenuService = newMenuService()
+
+func newMenuService() *menuService {
+	return &menuService{}
 }
 
-func UpdateMenu(menu modules.Menu) error {
-	return menu.Update(menu)
+type menuService struct {
 }
 
-func DeleteMenu(ids interface{}) error {
-	return modules.NewMenu().DeleteByIds(ids)
+func (m *menuService) Insert(menu *modules.Menu) error {
+	return repository.MenuRepository.Insert(menu)
 }
 
-func GetMenusOfBlog() []modules.Menu {
-	if data, err := modules.NewMenu().GetMenusOfBlog(); err != nil {
+func (m *menuService) Update(menu *modules.Menu) error {
+	return repository.MenuRepository.Update(menu)
+}
+func (m *menuService) Updates(id uint64, values map[string]interface{}) error {
+	return repository.MenuRepository.Updates(id, values)
+}
+
+func (m *menuService) Delete(id uint64) error {
+	return repository.MenuRepository.UpdateColumn(id, "deleted_", true)
+}
+
+func (m *menuService) GetMenusOfBlog() []modules.Menu {
+	if data, err := repository.MenuRepository.GetMenusOfBlog(); err != nil {
 		return []modules.Menu{}
 	} else {
 		return data

@@ -1,4 +1,4 @@
-package controller
+package admin
 
 import (
 	"TBlog/internal/modules"
@@ -16,10 +16,10 @@ func NewMenuController() MenuController {
 }
 
 func (m MenuController) Insert(c *gin.Context) {
-	json := modules.Menu{}
-	c.BindJSON(&json)
+	json := modules.NewMenu()
+	c.BindJSON(json)
 
-	if _, err := service.InsertMenu(json); err != nil {
+	if err := service.MenuService.Insert(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -33,10 +33,10 @@ func (m MenuController) Insert(c *gin.Context) {
 	}
 }
 func (m MenuController) Update(c *gin.Context) {
-	json := modules.Menu{}
-	c.BindJSON(&json)
+	json := modules.UpdateMenu()
+	c.BindJSON(json)
 	json.UpdateTime = time.Now()
-	if err := service.UpdateMenu(json); err != nil {
+	if err := service.MenuService.Update(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -51,10 +51,10 @@ func (m MenuController) Update(c *gin.Context) {
 }
 
 func (m MenuController) DeleteByIds(c *gin.Context) {
-	json := make(map[string][]uint)
+	json := make(map[string][]uint64)
 	c.BindJSON(&json)
-
-	if err := service.DeleteMenu(json["id"]); err != nil {
+	var id uint64 = json["id"][0]
+	if err := service.MenuService.Delete(id); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -68,11 +68,3 @@ func (m MenuController) DeleteByIds(c *gin.Context) {
 	}
 }
 
-func (m MenuController) GetMenusOfBlog(c *gin.Context) {
-	data := service.GetMenusOfBlog()
-	c.JSON(http.StatusOK, gin.H{
-		"code":   "200",
-		"msg":    "查询成功",
-		"result": data,
-	})
-}

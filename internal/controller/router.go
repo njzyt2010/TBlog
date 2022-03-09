@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"TBlog/internal/controller/admin"
+	"TBlog/internal/controller/api"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,19 +14,20 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 
 	//菜单
-	menu := NewMenuController()
+	menu := admin.NewMenuController()
+	apiMenu :=api.MenuController
 	// 栏目
-	topic := NewTopicController()
+	topic := admin.NewTopicController()
 	// 文章
-	article := NewArticleController()
+	article := admin.NewArticleController()
 	// 标签
-	tag := NewTagController()
+	tag := admin.NewTagController()
 	apiV1 := router.Group("/api/v1")
 	{
 		apiV1.POST("/menu/insert", menu.Insert)
 		apiV1.POST("/menu/update", menu.Update)
 		apiV1.POST("/menu/delete", menu.DeleteByIds)
-		apiV1.GET("/menu/gets", menu.GetMenusOfBlog)
+		apiV1.GET("/menu/gets", apiMenu.GetMenusOfBlog)
 		// 栏目
 		apiV1.GET("/topic/getById", topic.GetById)
 		apiV1.POST("/topic/insert", topic.Insert)

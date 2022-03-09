@@ -1,4 +1,4 @@
-package controller
+package admin
 
 import (
 	"TBlog/internal/modules"
@@ -8,18 +8,18 @@ import (
 	"strconv"
 )
 
-type TopicController struct {
+type ArticleController struct {
 }
 
-func NewTopicController() TopicController {
-	return TopicController{}
+func NewArticleController() ArticleController {
+	return ArticleController{}
 }
 
-func (t TopicController) Insert(c *gin.Context) {
-	json := modules.NewTopic()
+func (a ArticleController) Insert(c *gin.Context) {
+	json := modules.NewArticle()
 	c.BindJSON(&json)
 
-	if err := service.InsertTopic(json); err != nil {
+	if err := service.InsertArticle(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -34,11 +34,11 @@ func (t TopicController) Insert(c *gin.Context) {
 	}
 }
 
-func (t TopicController) Update(c *gin.Context) {
-	json := modules.NewTopic()
+func (a ArticleController) Update(c *gin.Context) {
+	json := modules.NewArticle()
 	c.BindJSON(&json)
 
-	if err := service.UpdateTopic(json); err != nil {
+	if err := service.UpdateArticle(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -52,10 +52,10 @@ func (t TopicController) Update(c *gin.Context) {
 		})
 	}
 }
-func (t TopicController) Delete(c *gin.Context) {
+func (a ArticleController) Delete(c *gin.Context) {
 	data := make(map[string][]uint)
 	c.BindJSON(&data)
-	if err := service.DeleteTopicByIds(data["ids"]); err != nil {
+	if err := service.DeleteArticleById(data["ids"]); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "删除失败",
@@ -70,7 +70,7 @@ func (t TopicController) Delete(c *gin.Context) {
 	}
 }
 
-func (t TopicController) GetById(c *gin.Context) {
+func (a ArticleController) GetById(c *gin.Context) {
 	if id, err := strconv.ParseUint(c.Query("id"), 10, 64); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
@@ -78,20 +78,20 @@ func (t TopicController) GetById(c *gin.Context) {
 			"result": nil,
 		})
 	} else {
-		topic := service.GetTopicById(uint(id))
+		article, _ := service.GetArticleById(uint(id))
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "200",
 			"msg":    "查询成功",
-			"result": topic,
+			"result": article,
 		})
 	}
 }
 
-func (t TopicController) Published(c *gin.Context) {
-	json := modules.NewTopic()
+func (t ArticleController) Published(c *gin.Context) {
+	json := modules.NewArticle()
 	c.BindJSON(&json)
 
-	if err := service.PublishedByTopic(json); err != nil {
+	if err := service.PubOrUnpubArticle(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "发布失败",

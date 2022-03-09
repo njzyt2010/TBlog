@@ -1,4 +1,4 @@
-package controller
+package admin
 
 import (
 	"TBlog/internal/modules"
