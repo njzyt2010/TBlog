@@ -14,11 +14,8 @@ type configuration struct {
 
 // DbConf 数据库模型
 type dbConf struct {
-	Host     string `yaml:"host"`
-	Port     string `yaml:"port"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Database string `yaml:"database"`
+	Dsn     string `yaml:"dsn"` //数据库连接串
+	LogLevel string	`yaml:"log-level"` // 日志级别
 }
 
 // serverConf 服务器相关配置

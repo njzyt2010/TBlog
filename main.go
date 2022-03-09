@@ -1,16 +1,16 @@
 package main
 
 import (
+	"TBlog/internal/controller"
 	"TBlog/pkg/config"
 	_ "TBlog/pkg/config"
 	_ "TBlog/pkg/database"
-	"TBlog/pkg/router"
 	"net/http"
 	"time"
 )
 
 func main() {
-	r := router.NewRouter()
+	r := controller.NewRouter()
 	port := config.GetServerConf().Port
 	server := &http.Server{
 		Addr:           ":" + port,

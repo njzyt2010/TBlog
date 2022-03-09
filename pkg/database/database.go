@@ -2,30 +2,44 @@ package database
 
 import (
 	"TBlog/pkg/config"
-	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"strings"
 )
 
 var DB *gorm.DB
 
 func init() {
 	dbConf := config.GetDbConf()
-	var username, password, host, port, database = dbConf.Username, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Database
+	// 将配置文件中的参数转为小写
+	lowerLogLevel := strings.ToLower(dbConf.LogLevel)
+	logLevel := convertLogLevel(lowerLogLevel)
 
-	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8&parseTime=True&loc=Local",
-		username,
-		password,
-		host,
-		port,
-		database,
-	)
+	config := &gorm.Config{
+		Logger: logger.Default.LogMode(logLevel),
+	}
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
-	})
+	db, err := gorm.Open(mysql.Open(dbConf.Dsn), config)
 	if err == nil {
 		DB = db
 	}
+}
+
+// 日志级别转换
+func convertLogLevel(loglevel string) logger.LogLevel {
+	var retLevel = logger.Error
+	switch loglevel {
+	case "info":
+		retLevel = logger.Info
+	case "warn":
+		retLevel = logger.Warn
+	case "error":
+		retLevel = logger.Error
+	case "silent":
+		retLevel = logger.Silent
+	default:
+		retLevel = logger.Error
+	}
+	return retLevel
 }

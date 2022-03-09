@@ -1,7 +1,6 @@
-package router
+package controller
 
 import (
-	"TBlog/internal/controller"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,13 +12,13 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 
 	//菜单
-	menu := controller.NewMenuController()
+	menu := NewMenuController()
 	// 栏目
-	topic := controller.NewTopicController()
+	topic := NewTopicController()
 	// 文章
-	article := controller.NewArticleController()
+	article := NewArticleController()
 	// 标签
-	tag := controller.NewTagController()
+	tag := NewTagController()
 	apiV1 := router.Group("/api/v1")
 	{
 		apiV1.POST("/menu/insert", menu.Insert)

@@ -1,8 +1,8 @@
+env: prod
 server:
   port: 9999
 db:
-  host: localhost
-  port: 3306
-  database: tblog
-  username: xxx
-  password: xxx
+  # username、password、ip、port按实际项目填写
+  dsn: username:password@tcp(ip:port)/tblog?charset=utf8mb4&parseTime=True&loc=Local
+  # 数据库日志级别： info warn error silent
+  log-level: info
