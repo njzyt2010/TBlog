@@ -1,6 +1,6 @@
 package modules
 
-import "TBlog/pkg/database"
+import "time"
 
 // 文章
 type Article struct {
@@ -15,48 +15,18 @@ type Article struct {
 func (a Article) TableName() string {
 	return "t_article"
 }
-func NewArticle() Article {
-	return Article{}
-}
-
-// 新增文章
-func (a Article) Insert() (*Article, error) {
-	if err := database.DB.Create(&a).Error; err != nil {
-		return nil, err
+func NewArticle() *Article {
+	var curTime = time.Now()
+	return &Article{
+		Model: Model{
+			CreatedTime: curTime,
+			UpdateTime:  curTime,
+			Deleted:     false,
+		},
 	}
-	topicArticle := TopicArticle{ArticleId: a.Id, TopicId: a.TopicId}
-	topicArticle.Insert()
-	return &a, nil
 }
-
-// 修改文章
-func (a Article) Update(values interface{}) (*Article, error) {
-	if err := database.DB.Model(&a).Where("id = ?", a.Id).Updates(values).Error; err != nil {
-		return nil, err
+func UpdateArticle() *Article {
+	return &Article{
+		Model:     Model{UpdateTime: time.Now()},
 	}
-	topicArticle := TopicArticle{}
-	topicArticle.DeleteByArticleId(a.Id)
-	topicArticle.ArticleId = a.Id
-	topicArticle.TopicId = a.TopicId
-	topicArticle.Insert()
-	return &a, nil
-}
-func (a Article) Delete(ids interface{}) error {
-	if err := database.DB.Exec("UPDATE t_article SET deleted_=1 where id in (?)", ids).Error; err != nil {
-		return err
-	}
-	return nil
-}
-func (a Article) GetById(id interface{}) (*Article, error) {
-	if err := database.DB.First(&a, id).Error; err != nil {
-		return nil, err
-	}
-	return &a, nil
-}
-
-func (a Article) PubOrUnpubById() error {
-	if err := database.DB.Model(&a).Update("published_", a.Published).Error; err != nil {
-		return err
-	}
-	return nil
 }

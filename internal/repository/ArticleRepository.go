@@ -31,7 +31,11 @@ func (a *articleRepository) Updates(id uint64, values map[string]interface{}) er
 	err := database.DB.Model(&modules.Article{}).Where("id = ?", id).Updates(values).Error
 	return err
 }
-
+// 修改文章
+func (a *articleRepository) UpdateColumn(id uint64,column string , value interface{}) error {
+	err := database.DB.Model(&modules.Article{}).Where("id = ?" , id).UpdateColumn(column,value).Error
+	return err
+}
 // 删除文章
 func (a *articleRepository) Delete(id uint64) {
 	database.DB.Delete(&modules.Article{}, "id = ?", id)
