@@ -2,45 +2,58 @@ package service
 
 import (
 	"TBlog/internal/modules"
-	"time"
+	"TBlog/internal/repository"
 )
 
-func InsertArticle(a modules.Article) error {
-	var curTime = time.Now()
-	a.CreatedTime = curTime
-	a.UpdateTime = curTime
-	if _, err := a.Insert(); err != nil {
-		return err
-	}
-	return nil
+type articleService struct {
 }
 
-func UpdateArticle(a modules.Article) error {
-	a.UpdateTime = time.Now()
-	if _, err := a.Update(a); err != nil {
-		return err
-	}
-	return nil
+func newArticleService() *articleService {
+	return &articleService{}
 }
 
-func DeleteArticleById(ids interface{}) error {
-	if err := modules.NewArticle().Delete(ids); err != nil {
-		return err
-	}
-	return nil
+var ArticleService = newArticleService()
+
+//新增
+func (a *articleService) Insert(article *modules.Article) error {
+	return repository.ArticleRepository.Insert(article)
 }
 
-func GetArticleById(id interface{}) (*modules.Article, error) {
-	if article, err := modules.NewArticle().GetById(id); err != nil {
-		return nil, err
+// 修改
+func (a *articleService) Update(article *modules.Article) error {
+	return repository.ArticleRepository.Update(article)
+}
+func (a *articleService) Updates(id uint64, values map[string]interface{}) error {
+	return repository.ArticleRepository.Updates(id, values)
+}
+func (a *articleService) UpdateColumn(id uint64, column string, value interface{}) error {
+	return repository.ArticleRepository.UpdateColumn(id, column, value)
+}
+
+//删除
+func (a *articleService) Delete(ids []uint64) error {
+
+	for i := 0; i < len(ids); i++ {
+		if err := repository.ArticleRepository.Delete(ids[i]); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+func (a *articleService) GetById(id uint64) *modules.Article {
+	if data, err := repository.ArticleRepository.GetById(id); err != nil {
+		return nil
 	} else {
-		return article, nil
+		return data
 	}
 }
 
-func PubOrUnpubArticle(a modules.Article) error {
-	if err := a.PubOrUnpubById(); err != nil {
+//发布、取消发布
+func (a *articleService) PubSubById(id uint64, ) error {
+	if article, err := repository.ArticleRepository.GetById(id); err != nil {
 		return err
+	} else {
+		return repository.ArticleRepository.PubSubById(id, !article.Published)
 	}
-	return nil
 }

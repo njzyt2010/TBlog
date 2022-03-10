@@ -17,9 +17,9 @@ func NewArticleController() ArticleController {
 
 func (a ArticleController) Insert(c *gin.Context) {
 	json := modules.NewArticle()
-	c.BindJSON(&json)
+	c.BindJSON(json)
 
-	if err := service.InsertArticle(json); err != nil {
+	if err := service.ArticleService.Insert(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -36,9 +36,9 @@ func (a ArticleController) Insert(c *gin.Context) {
 
 func (a ArticleController) Update(c *gin.Context) {
 	json := modules.NewArticle()
-	c.BindJSON(&json)
+	c.BindJSON(json)
 
-	if err := service.UpdateArticle(json); err != nil {
+	if err := service.ArticleService.Update(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -53,9 +53,10 @@ func (a ArticleController) Update(c *gin.Context) {
 	}
 }
 func (a ArticleController) Delete(c *gin.Context) {
-	data := make(map[string][]uint)
-	c.BindJSON(&data)
-	if err := service.DeleteArticleById(data["ids"]); err != nil {
+	json := make(map[string][]uint64)
+	c.BindJSON(&json)
+	var ids []uint64 = json["ids"]
+	if err := service.ArticleService.Delete(ids); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "删除失败",
@@ -78,7 +79,7 @@ func (a ArticleController) GetById(c *gin.Context) {
 			"result": nil,
 		})
 	} else {
-		article, _ := service.GetArticleById(uint(id))
+		article := service.ArticleService.GetById(id)
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "200",
 			"msg":    "查询成功",
@@ -89,9 +90,9 @@ func (a ArticleController) GetById(c *gin.Context) {
 
 func (t ArticleController) Published(c *gin.Context) {
 	json := modules.NewArticle()
-	c.BindJSON(&json)
+	c.BindJSON(json)
 
-	if err := service.PubOrUnpubArticle(json); err != nil {
+	if err := service.ArticleService.PubSubById(json.Id); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "发布失败",
