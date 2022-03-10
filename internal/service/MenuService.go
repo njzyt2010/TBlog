@@ -25,8 +25,13 @@ func (m *menuService) Updates(id uint64, values map[string]interface{}) error {
 	return repository.MenuRepository.Updates(id, values)
 }
 
-func (m *menuService) Delete(id uint64) error {
-	return repository.MenuRepository.UpdateColumn(id, "deleted_", true)
+func (m *menuService) Delete(ids []uint64) error {
+	for i := 0; i < len(ids); i++ {
+		if err := repository.MenuRepository.Delete(ids[i]); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (m *menuService) GetMenusOfBlog() []modules.Menu {

@@ -2,26 +2,34 @@ package service
 
 import (
 	"TBlog/internal/modules"
+	"TBlog/internal/repository"
 )
 
-func InsertTag(tag modules.Tag) error {
-	if _, err := tag.Insert(); err != nil {
-		return err
-	}
-	return nil
+type tagService struct {
 }
 
-func UpdateTag(tag modules.Tag) error {
-
-	if _, err := tag.Update(tag); err != nil {
-		return err
-	}
-	return nil
+func newTagService() *tagService {
+	return &tagService{}
 }
 
-func DeleteTag(ids interface{}) error {
-	if err := modules.NewTag().Delete(ids); err != nil {
-		return err
-	}
-	return nil
+var TagService = newTagService()
+
+func (t *tagService) Insert(tag *modules.Tag) error {
+	return repository.TagRepository.Insert(tag)
+}
+
+func (t *tagService) Updates(tag *modules.Tag) error {
+	return repository.TagRepository.Updates(tag)
+}
+
+func (t *tagService) DeleteByName(name string) error {
+	return repository.TagRepository.DeleteByName(name)
+}
+
+func (t *tagService) GetByIds(ids []uint64) []modules.Tag {
+	return repository.TagRepository.GetByIds(ids)
+}
+
+func (t *tagService) GetAll() []modules.Tag {
+	return repository.TagRepository.GetAll()
 }

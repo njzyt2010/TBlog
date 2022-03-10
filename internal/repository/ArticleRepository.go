@@ -22,7 +22,7 @@ func (a *articleRepository) Insert(article *modules.Article) error {
 
 // 修改文章
 func (a *articleRepository) Update(article *modules.Article) error {
-	err := database.DB.Save(article).Error
+	err := database.DB.Updates(article).Error
 	return err
 }
 

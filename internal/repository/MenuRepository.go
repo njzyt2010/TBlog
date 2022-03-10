@@ -22,7 +22,7 @@ func (m *menuRepository) Insert(menu *modules.Menu) error {
 
 // 修改菜单
 func (m *menuRepository) Update(menu *modules.Menu) error {
-	err := database.DB.Save(menu).Error
+	err := database.DB.Updates(menu).Error
 	return err
 }
 
@@ -38,8 +38,11 @@ func (m *menuRepository) UpdateColumn(id uint64, column string, value interface{
 }
 
 //删除菜单
-func (m *menuRepository) Delete(id uint64) {
-	database.DB.Delete(&modules.Menu{}, "id = ?", id)
+func (m *menuRepository) Delete(id uint64) error {
+	if err := database.DB.Model(&modules.Menu{}).Where("id = ?" ,id).Update("deleted_" ,1).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 // 查询博客下所有的菜单

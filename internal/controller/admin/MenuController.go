@@ -55,8 +55,8 @@ func (m *menuController ) Update(c *gin.Context) {
 func (m *menuController ) DeleteByIds(c *gin.Context) {
 	json := make(map[string][]uint64)
 	c.BindJSON(&json)
-	var id uint64 = json["id"][0]
-	if err := service.MenuService.Delete(id); err != nil {
+	var ids []uint64 = json["id"]
+	if err := service.MenuService.Delete(ids); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",

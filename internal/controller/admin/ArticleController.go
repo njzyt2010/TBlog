@@ -37,7 +37,7 @@ func (a *articleController) Insert(c *gin.Context) {
 }
 
 func (a *articleController) Update(c *gin.Context) {
-	json := modules.NewArticle()
+	json := modules.UpdateArticle()
 	c.BindJSON(json)
 
 	if err := service.ArticleService.Update(json); err != nil {
