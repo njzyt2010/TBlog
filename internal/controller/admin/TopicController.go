@@ -8,14 +8,15 @@ import (
 	"strconv"
 )
 
-type TopicController struct {
+type topicController struct {
 }
 
-func NewTopicController() TopicController {
-	return TopicController{}
+func newTopicController() *topicController {
+	return &topicController{}
 }
+var TopicController = newTopicController()
 
-func (t TopicController) Insert(c *gin.Context) {
+func (t *topicController) Insert(c *gin.Context) {
 	json := modules.NewTopic()
 	c.BindJSON(&json)
 
@@ -34,7 +35,7 @@ func (t TopicController) Insert(c *gin.Context) {
 	}
 }
 
-func (t TopicController) Update(c *gin.Context) {
+func (t *topicController) Update(c *gin.Context) {
 	json := modules.NewTopic()
 	c.BindJSON(&json)
 
@@ -52,7 +53,7 @@ func (t TopicController) Update(c *gin.Context) {
 		})
 	}
 }
-func (t TopicController) Delete(c *gin.Context) {
+func (t *topicController) Delete(c *gin.Context) {
 	data := make(map[string][]uint)
 	c.BindJSON(&data)
 	if err := service.DeleteTopicByIds(data["ids"]); err != nil {
@@ -70,7 +71,7 @@ func (t TopicController) Delete(c *gin.Context) {
 	}
 }
 
-func (t TopicController) GetById(c *gin.Context) {
+func (t *topicController) GetById(c *gin.Context) {
 	if id, err := strconv.ParseUint(c.Query("id"), 10, 64); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
@@ -87,7 +88,7 @@ func (t TopicController) GetById(c *gin.Context) {
 	}
 }
 
-func (t TopicController) Published(c *gin.Context) {
+func (t *topicController) Published(c *gin.Context) {
 	json := modules.NewTopic()
 	c.BindJSON(&json)
 

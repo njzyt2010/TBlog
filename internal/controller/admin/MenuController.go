@@ -8,14 +8,16 @@ import (
 	"time"
 )
 
-type MenuController struct {
+type menuController struct {
 }
 
-func NewMenuController() MenuController {
-	return MenuController{}
+func newMenuController() *menuController {
+	return &menuController{}
 }
 
-func (m MenuController) Insert(c *gin.Context) {
+var MenuController = newMenuController()
+
+func (m *menuController ) Insert(c *gin.Context) {
 	json := modules.NewMenu()
 	c.BindJSON(json)
 
@@ -32,7 +34,7 @@ func (m MenuController) Insert(c *gin.Context) {
 		})
 	}
 }
-func (m MenuController) Update(c *gin.Context) {
+func (m *menuController ) Update(c *gin.Context) {
 	json := modules.UpdateMenu()
 	c.BindJSON(json)
 	json.UpdateTime = time.Now()
@@ -50,7 +52,7 @@ func (m MenuController) Update(c *gin.Context) {
 	}
 }
 
-func (m MenuController) DeleteByIds(c *gin.Context) {
+func (m *menuController ) DeleteByIds(c *gin.Context) {
 	json := make(map[string][]uint64)
 	c.BindJSON(&json)
 	var id uint64 = json["id"][0]

@@ -7,14 +7,14 @@ import (
 	"net/http"
 )
 
-type TagController struct {
+type tagController struct {
 }
 
-func NewTagController() TagController {
-	return TagController{}
+func newTagController() *tagController {
+	return &tagController{}
 }
-
-func (t TagController) Insert(c *gin.Context) {
+var TagController = newTagController()
+func (t *tagController) Insert(c *gin.Context) {
 	json := modules.NewTag()
 	c.BindJSON(&json)
 	if err := service.InsertTag(json); err != nil {
@@ -30,7 +30,7 @@ func (t TagController) Insert(c *gin.Context) {
 	}
 }
 
-func (t TagController) Update(c *gin.Context) {
+func (t *tagController) Update(c *gin.Context) {
 	json := modules.NewTag()
 	c.BindJSON(&json)
 	if err := service.UpdateTag(json); err != nil {
@@ -45,7 +45,7 @@ func (t TagController) Update(c *gin.Context) {
 		})
 	}
 }
-func (t TagController) Delete(c *gin.Context) {
+func (t *tagController) Delete(c *gin.Context) {
 	data := make(map[string][]uint)
 	c.BindJSON(&data)
 	if err := service.DeleteTag(data["ids"]); err != nil {

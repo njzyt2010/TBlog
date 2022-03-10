@@ -8,14 +8,16 @@ import (
 	"strconv"
 )
 
-type ArticleController struct {
+type articleController struct {
 }
 
-func NewArticleController() ArticleController {
-	return ArticleController{}
+func newArticleController() *articleController {
+	return &articleController{}
 }
 
-func (a ArticleController) Insert(c *gin.Context) {
+var ArticleController = newArticleController()
+
+func (a *articleController) Insert(c *gin.Context) {
 	json := modules.NewArticle()
 	c.BindJSON(json)
 
@@ -34,7 +36,7 @@ func (a ArticleController) Insert(c *gin.Context) {
 	}
 }
 
-func (a ArticleController) Update(c *gin.Context) {
+func (a *articleController) Update(c *gin.Context) {
 	json := modules.NewArticle()
 	c.BindJSON(json)
 
@@ -52,7 +54,7 @@ func (a ArticleController) Update(c *gin.Context) {
 		})
 	}
 }
-func (a ArticleController) Delete(c *gin.Context) {
+func (a *articleController) Delete(c *gin.Context) {
 	json := make(map[string][]uint64)
 	c.BindJSON(&json)
 	var ids []uint64 = json["ids"]
@@ -71,7 +73,7 @@ func (a ArticleController) Delete(c *gin.Context) {
 	}
 }
 
-func (a ArticleController) GetById(c *gin.Context) {
+func (a *articleController) GetById(c *gin.Context) {
 	if id, err := strconv.ParseUint(c.Query("id"), 10, 64); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
@@ -88,7 +90,7 @@ func (a ArticleController) GetById(c *gin.Context) {
 	}
 }
 
-func (t ArticleController) Published(c *gin.Context) {
+func (t *articleController) Published(c *gin.Context) {
 	json := modules.NewArticle()
 	c.BindJSON(json)
 

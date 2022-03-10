@@ -21,34 +21,34 @@ func NewRouter() *gin.Engine {
 //管理端的 controller
 func adminEngine(engine *gin.Engine) {
 	//菜单
-	menu := admin.NewMenuController()
+	menu := admin.MenuController
 	// 栏目
-	topic := admin.NewTopicController()
+	topic := admin.TopicController
 	// 文章
-	article := admin.NewArticleController()
+	article := admin.ArticleController
 	// 标签
-	tag := admin.NewTagController()
-	apiV1 := engine.Group("/v1/admin")
+	tag := admin.TagController
+	adminV1 := engine.Group("/v1/admin")
 	{
-		apiV1.POST("/menu/insert", menu.Insert)
-		apiV1.POST("/menu/update", menu.Update)
-		apiV1.POST("/menu/delete", menu.DeleteByIds)
+		adminV1.POST("/menu/insert", menu.Insert)
+		adminV1.POST("/menu/update", menu.Update)
+		adminV1.POST("/menu/delete", menu.DeleteByIds)
 		// 栏目
-		apiV1.GET("/topic/getById", topic.GetById)
-		apiV1.POST("/topic/insert", topic.Insert)
-		apiV1.POST("/topic/update", topic.Update)
-		apiV1.POST("/topic/delete", topic.Delete)
-		apiV1.POST("/topic/pubAndUnpub", topic.Published)
+		adminV1.GET("/topic/getById", topic.GetById)
+		adminV1.POST("/topic/insert", topic.Insert)
+		adminV1.POST("/topic/update", topic.Update)
+		adminV1.POST("/topic/delete", topic.Delete)
+		adminV1.POST("/topic/pubAndUnpub", topic.Published)
 		// 文章
-		apiV1.GET("/article/getById", article.GetById)
-		apiV1.POST("/article/insert", article.Insert)
-		apiV1.POST("/article/update", article.Update)
-		apiV1.POST("/article/delete", article.Delete)
-		apiV1.POST("/article/pubSub", article.Published)
+		adminV1.GET("/article/getById", article.GetById)
+		adminV1.POST("/article/insert", article.Insert)
+		adminV1.POST("/article/update", article.Update)
+		adminV1.POST("/article/delete", article.Delete)
+		adminV1.POST("/article/pubSub", article.Published)
 		//	标签
-		apiV1.POST("/tag/insert", tag.Insert)
-		apiV1.POST("/tag/update", tag.Update)
-		apiV1.POST("/tag/delete", tag.Delete)
+		adminV1.POST("/tag/insert", tag.Insert)
+		adminV1.POST("/tag/update", tag.Update)
+		adminV1.POST("/tag/delete", tag.Delete)
 	}
 }
 
