@@ -14,13 +14,14 @@ type topicController struct {
 func newTopicController() *topicController {
 	return &topicController{}
 }
+
 var TopicController = newTopicController()
 
 func (t *topicController) Insert(c *gin.Context) {
 	json := modules.NewTopic()
-	c.BindJSON(&json)
+	c.BindJSON(json)
 
-	if err := service.InsertTopic(json); err != nil {
+	if err := service.TopicService.Insert(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -36,10 +37,10 @@ func (t *topicController) Insert(c *gin.Context) {
 }
 
 func (t *topicController) Update(c *gin.Context) {
-	json := modules.NewTopic()
-	c.BindJSON(&json)
+	json := modules.UpdateTopic()
+	c.BindJSON(json)
 
-	if err := service.UpdateTopic(json); err != nil {
+	if err := service.TopicService.Updates(json); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "保存失败",
@@ -54,9 +55,9 @@ func (t *topicController) Update(c *gin.Context) {
 	}
 }
 func (t *topicController) Delete(c *gin.Context) {
-	data := make(map[string][]uint)
+	data := make(map[string][]uint64)
 	c.BindJSON(&data)
-	if err := service.DeleteTopicByIds(data["ids"]); err != nil {
+	if err := service.TopicService.Delete(data["ids"]); err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code":   "400",
 			"msg":    "删除失败",
@@ -79,30 +80,19 @@ func (t *topicController) GetById(c *gin.Context) {
 			"result": nil,
 		})
 	} else {
-		topic := service.GetTopicById(uint(id))
-		c.JSON(http.StatusOK, gin.H{
-			"code":   "200",
-			"msg":    "查询成功",
-			"result": topic,
-		})
-	}
-}
-
-func (t *topicController) Published(c *gin.Context) {
-	json := modules.NewTopic()
-	c.BindJSON(&json)
-
-	if err := service.PublishedByTopic(json); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code":   "400",
-			"msg":    "发布失败",
-			"result": nil,
-		})
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"code":   "200",
-			"msg":    "发布成功",
-			"result": nil,
-		})
+		topic, err2 := service.TopicService.GetById(id)
+		if err2 != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code":   "400",
+				"msg":    "查询错误",
+				"result": nil,
+			})
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"code":   "200",
+				"msg":    "查询成功",
+				"result": topic,
+			})
+		}
 	}
 }

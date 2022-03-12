@@ -2,46 +2,35 @@ package service
 
 import (
 	"TBlog/internal/modules"
-	"time"
+	"TBlog/internal/repository"
 )
 
-func InsertTopic(t modules.Topic) error {
-	var curTime = time.Now()
-	t.CreatedTime = curTime
-	t.UpdateTime = curTime
-	if _, err := t.Insert(); err != nil {
-		return err
-	} else {
-		return nil
-	}
+type topicService struct {
+
 }
 
-func UpdateTopic(t modules.Topic) error {
-	t.UpdateTime = time.Now()
-	if _, err := t.Update(t); err != nil {
-		return err
-	} else {
-		return nil
-	}
+func newTopicService() *topicService {
+	return &topicService{}
 }
-func DeleteTopicByIds(ids []uint) error {
-	if err := modules.NewTopic().DeleteById(ids); err != nil {
-		return err
-	}
-	return nil
+var TopicService = newTopicService()
+
+func (t *topicService) Insert(topic *modules.Topic) error {
+	return repository.TopicRepository.Insert(topic)
 }
 
-func GetTopicById(id uint) *modules.Topic {
-	if data, err := modules.NewTopic().GetById(id); err != nil {
-		return nil
-	} else {
-		return data
-	}
+func (t *topicService) Updates(topic *modules.Topic) error {
+	return repository.TopicRepository.Updates(topic)
 }
 
-func PublishedByTopic(t modules.Topic) error {
-	if err := t.PublishedById(); err != nil {
-		return err
-	}
-	return nil
+func (t *topicService) Update(id uint64,values map[string]interface{}) error  {
+	return repository.TopicRepository.Update(id,values)
+}
+func (t *topicService) UpdateColumn(id uint64,column string,value interface{})error  {
+	return repository.TopicRepository.UpdateColumn(id ,column,value)
+}
+func (t *topicService) Delete(ids []uint64) error {
+	return repository.TopicRepository.Delete(ids)
+}
+func (t *topicService) GetById(id uint64) (*modules.Topic,error) {
+	return repository.TopicRepository.GetById(id)
 }

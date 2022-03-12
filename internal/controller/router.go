@@ -38,7 +38,7 @@ func adminEngine(engine *gin.Engine) {
 		adminV1.POST("/topic/insert", topic.Insert)
 		adminV1.POST("/topic/update", topic.Update)
 		adminV1.POST("/topic/delete", topic.Delete)
-		adminV1.POST("/topic/pubAndUnpub", topic.Published)
+		//adminV1.POST("/topic/pubAndUnpub", topic.Published)
 		// 文章
 		adminV1.GET("/article/getById", article.GetById)
 		adminV1.POST("/article/insert", article.Insert)
