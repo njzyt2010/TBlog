@@ -41,6 +41,7 @@ create table t_article
     content_     longtext comment '文章内容',
     reprint_     tinyint(1) comment '是否转载',
     reprint_url  varchar(255) comment '转载文章的地址',
+    topic_id     bigint(20) comment '所属栏目',
     published_   tinyint(1)            default 0 comment '文章是否发布',
     deleted_     tinyint(1)   not null default 0 comment '是否删除。0=未删除，1=已删除',
     created_by   varchar(20)           default 0 comment '创建人',
@@ -62,10 +63,10 @@ create table t_tag
     update_time  datetime comment '变更时间'
 ) comment '标签';
 
-drop table if exists t_topic_article;
-create table t_topic_article
+drop table if exists t_article_tag;
+create table t_article_tag
 (
     id         bigint(20) not null primary key auto_increment,
-    topic_id   bigint(20) comment '栏目id',
+    tag_id     bigint(20) comment '标签id',
     article_id bigint(20) comment '文章id'
-) comment '栏目-文章';
+) comment '文章-标签';
