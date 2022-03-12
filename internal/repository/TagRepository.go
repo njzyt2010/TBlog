@@ -23,7 +23,10 @@ func (t *tagRepository) Updates(tag *modules.Tag) error {
 	err := database.DB.Updates(tag).Error
 	return err
 }
-
+func (t *tagRepository) Deletes(ids []uint64) error  {
+	err := database.DB.Model(&modules.Tag{}).Where("id in(?)",ids).UpdateColumn("deleted_",true).Error
+	return err
+}
 func (t *tagRepository) DeleteByName(name string) error {
 	err := database.DB.Model(&modules.Tag{}).Where("name_ = ?", name).Update("deleted_", true).Error
 	return err

@@ -47,6 +47,21 @@ func (t *tagController) Update(c *gin.Context) {
 		})
 	}
 }
+func (t *tagController) Delete(c *gin.Context) {
+	json := make(map[string][]uint64)
+	c.BindJSON(json)
+	if err := service.TagService.Deletes(json["ids"]); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "400",
+			"msg":  "保存失败",
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "200",
+			"msg":  "保存成功",
+		})
+	}
+}
 
 //
 func (t *tagController) GetAll(c *gin.Context) {

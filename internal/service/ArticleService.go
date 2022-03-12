@@ -50,10 +50,10 @@ func (a *articleService) GetById(id uint64) *modules.Article {
 }
 
 //发布、取消发布
-func (a *articleService) PubSubById(id uint64, ) error {
+func (a *articleService) PubSubById(id uint64) error {
 	if article, err := repository.ArticleRepository.GetById(id); err != nil {
 		return err
 	} else {
-		return repository.ArticleRepository.PubSubById(id, !article.Published)
+		return repository.ArticleRepository.PubSubById(id, !*article.Published)
 	}
 }

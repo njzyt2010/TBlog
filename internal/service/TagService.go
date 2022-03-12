@@ -21,7 +21,9 @@ func (t *tagService) Insert(tag *modules.Tag) error {
 func (t *tagService) Updates(tag *modules.Tag) error {
 	return repository.TagRepository.Updates(tag)
 }
-
+func (t *tagService) Deletes(ids []uint64) error {
+	return repository.TagRepository.Deletes(ids)
+}
 func (t *tagService) DeleteByName(name string) error {
 	return repository.TagRepository.DeleteByName(name)
 }
