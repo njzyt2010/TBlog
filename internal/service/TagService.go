@@ -28,7 +28,7 @@ func (t *tagService) DeleteByName(name string) error {
 	return repository.TagRepository.DeleteByName(name)
 }
 
-func (t *tagService) GetByIds(ids []uint64) []modules.Tag {
+func (t *tagService) GetByIds(ids []uint64) ([]modules.Tag, error) {
 	return repository.TagRepository.GetByIds(ids)
 }
 

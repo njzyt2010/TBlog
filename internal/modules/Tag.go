@@ -5,7 +5,7 @@ import "time"
 // 标签
 type Tag struct {
 	Model
-	Name string `gorm:"column:name_" json:"name"`
+	Name string `gorm:"column:name_" json:"name"` //标签名称
 }
 
 func (t Tag) TableName() string {
@@ -15,7 +15,7 @@ func (t Tag) TableName() string {
 func NewTag() *Tag {
 	var curTime = time.Now()
 	return &Tag{
-		Model:Model{
+		Model: Model{
 			CreatedTime: curTime,
 			UpdateTime:  curTime,
 			Deleted:     false,
@@ -24,6 +24,9 @@ func NewTag() *Tag {
 }
 func UpdateTag() *Tag {
 	return &Tag{
-		Model: Model{UpdateTime: time.Now()},
+		Model: Model{
+			UpdateTime: time.Now(),
+			Deleted:    false,
+		},
 	}
 }

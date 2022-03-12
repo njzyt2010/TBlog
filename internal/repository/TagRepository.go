@@ -23,8 +23,8 @@ func (t *tagRepository) Updates(tag *modules.Tag) error {
 	err := database.DB.Updates(tag).Error
 	return err
 }
-func (t *tagRepository) Deletes(ids []uint64) error  {
-	err := database.DB.Model(&modules.Tag{}).Where("id in(?)",ids).UpdateColumn("deleted_",true).Error
+func (t *tagRepository) Deletes(ids []uint64) error {
+	err := database.DB.Model(&modules.Tag{}).Where("id in(?)", ids).UpdateColumn("deleted_", true).Error
 	return err
 }
 func (t *tagRepository) DeleteByName(name string) error {
@@ -32,12 +32,12 @@ func (t *tagRepository) DeleteByName(name string) error {
 	return err
 }
 
-func (t *tagRepository) GetByIds(ids []uint64) []modules.Tag {
+func (t *tagRepository) GetByIds(ids []uint64) ([]modules.Tag, error) {
 	var tags []modules.Tag = nil
 	if err := database.DB.Model(&modules.Tag{}).Where("id in (?)", ids).Find(&tags).Error; err != nil {
-		return nil
+		return tags, err
 	}
-	return tags
+	return tags, nil
 }
 
 func (t *tagRepository) GetAll() []modules.Tag {
