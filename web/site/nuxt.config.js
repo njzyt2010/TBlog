@@ -8,6 +8,9 @@ export default {
     htmlAttrs: {
       lang: 'en',
     },
+    bodyAttrs: {
+      style:'margin:0;padding:0;min-height:100vh;'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
