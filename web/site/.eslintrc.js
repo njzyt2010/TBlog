@@ -14,6 +14,10 @@ module.exports = {
   rules: {
     "vue/multi-word-component-names": ["error", {
       "ignores": ["Blog"]
+    }],
+    "vue/first-attribute-linebreak": [0, {
+      "singleline": "ignore",
+      "multiline": "below"
     }]
   },
 }
