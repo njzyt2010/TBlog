@@ -6,7 +6,7 @@ import "time"
 type Menu struct {
 	Model
 	Pid    uint64 `gorm:"column:pid_" json:"pid"`
-	Name   string `gorm:"column:name_" json:"name"`
+	Title   string `gorm:"column:title_" json:"title"`
 	Sorted uint8  `gorm:"column:sorted_" json:"sorted"`
 }
 

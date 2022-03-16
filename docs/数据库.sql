@@ -7,7 +7,7 @@ create table t_menu
 (
     id           bigint(20)  not null primary key auto_increment,
     pid_         bigint(20)  not null default 0 comment '',
-    name_        varchar(50) not null comment '名称',
+    title_        varchar(50) not null comment '名称',
     sorted_      int(3)      not null comment '排序',
     deleted_     tinyint(1)  not null default 0 comment '是否删除。0=未删除，1=已删除',
     created_by   varchar(20)          default 0 comment '创建人',
