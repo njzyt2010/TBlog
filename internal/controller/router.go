@@ -56,8 +56,10 @@ func adminEngine(engine *gin.Engine) {
 func apiEngine(engine *gin.Engine) {
 	//菜单
 	menu := api.MenuController
+	topic :=api.TopicController
 	apiV1 := engine.Group("/v1/api")
 	{
 		apiV1.GET("/menu/gets", menu.GetMenusOfBlog)
+		apiV1.GET("/topic/list",topic.GetByTopicId)
 	}
 }

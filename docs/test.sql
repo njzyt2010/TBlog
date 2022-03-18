@@ -7,3 +7,7 @@ values  (1, 0, '首页', 1, 0, '0', '0', null, null),
         (6, 5, 'Spring Framework', 6, 0, '0', '0', null, null),
         (7, 5, 'Spring Boot', 7, 0, '0', '0', null, null),
         (8, 5, 'Spring Cloud', 8, 0, '0', '0', null, null);
+
+
+insert into t_article(title_, content_, reprint_, reprint_url, topic_id, published_, deleted_) VALUES
+("测试文章","测试的内容",0,'',1,1,0)
