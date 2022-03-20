@@ -47,3 +47,14 @@ func (t *topicRepository) GetById(id uint64) (*modules.Topic, error) {
 	return topic, nil
 
 }
+
+// 查询博客下所有的菜单
+// 未删除、已发布的菜单
+func (t *topicRepository) GetTopicsOfBlog() ([]modules.Topic, error) {
+	var topics []modules.Topic = nil
+	if err := database.DB.Model(&modules.Topic{}).Where("deleted_ = ?", false).Where("published_= ?",true).Find(&topics).Error; err != nil {
+		return nil, err
+	}
+	return topics, nil
+}
+

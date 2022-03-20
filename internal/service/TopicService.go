@@ -34,3 +34,11 @@ func (t *topicService) Delete(ids []uint64) error {
 func (t *topicService) GetById(id uint64) (*modules.Topic,error) {
 	return repository.TopicRepository.GetById(id)
 }
+
+func (t *topicService) GetTopicsOfBlog() []modules.Topic {
+	if data, err := repository.TopicRepository.GetTopicsOfBlog(); err != nil {
+		return nil
+	} else {
+		return data
+	}
+}

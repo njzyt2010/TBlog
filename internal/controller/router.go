@@ -21,7 +21,7 @@ func NewRouter() *gin.Engine {
 //管理端的 controller
 func adminEngine(engine *gin.Engine) {
 	//菜单
-	menu := admin.MenuController
+	//menu := admin.MenuController
 	// 栏目
 	topic := admin.TopicController
 	// 文章
@@ -30,9 +30,9 @@ func adminEngine(engine *gin.Engine) {
 	tag := admin.TagController
 	adminV1 := engine.Group("/v1/admin")
 	{
-		adminV1.POST("/menu/insert", menu.Insert)
-		adminV1.POST("/menu/update", menu.Update)
-		adminV1.POST("/menu/delete", menu.DeleteByIds)
+		//adminV1.POST("/menu/insert", menu.Insert)
+		//adminV1.POST("/menu/update", menu.Update)
+		//adminV1.POST("/menu/delete", menu.DeleteByIds)
 		// 栏目
 		adminV1.GET("/topic/getById", topic.GetById)
 		adminV1.POST("/topic/insert", topic.Insert)
@@ -54,12 +54,11 @@ func adminEngine(engine *gin.Engine) {
 
 //公开访问的部分
 func apiEngine(engine *gin.Engine) {
-	//菜单
-	menu := api.MenuController
-	topic :=api.TopicController
+	//专题
+	topic := api.TopicController
 	apiV1 := engine.Group("/v1/api")
 	{
-		apiV1.GET("/menu/gets", menu.GetMenusOfBlog)
-		apiV1.GET("/topic/list",topic.GetByTopicId)
+		apiV1.GET("/topics", topic.GetTopicsOfBlog)  // 查询可见专题
+		apiV1.GET("/topic/list", topic.GetByTopicId) // 通过专题查询专题下文章
 	}
 }

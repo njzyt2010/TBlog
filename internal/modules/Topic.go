@@ -9,9 +9,9 @@ import (
 type Topic struct {
 	Model
 	Pid       uint64 `gorm:"column:pid_" json:"pid"`             //子栏目
-	Name      string `gorm:"column:name_" json:"name"`           // 栏目名称
+	Title      string `gorm:"column:title_" json:"title"`           // 栏目名称
 	ImageUrl  string `gorm:"column:image_url" json:"imageUrl"`   //栏目图片
-	Type      uint8  `gorm:"column:type_" json:"type"`           // 栏目的类型，0=普通，1=轮播
+	Rotation  bool  `gorm:"column:rotation_" json:"rotation"`    //是否轮播栏目
 	Sorted    uint8  `gorm:"column:sorted_" json:"sorted"`       // 排序
 	Published bool   `gorm:"column:published_" json:"published"` //是否发布
 }

@@ -1,12 +1,12 @@
-insert into tblog.t_menu (id, pid_, title_, sorted_, deleted_, created_by, update_by, created_time, update_time)
-values  (1, 0, '首页', 1, 0, '0', '0', null, null),
-        (2, 0, 'Java', 2, 0, '0', '0', null, null),
-        (3, 2, 'Java基础', 3, 0, '0', '0', null, null),
-        (4, 2, 'JVM', 4, 0, '0', '0', null, null),
-        (5, 0, 'Spring', 5, 0, '0', '0', null, null),
-        (6, 5, 'Spring Framework', 6, 0, '0', '0', null, null),
-        (7, 5, 'Spring Boot', 7, 0, '0', '0', null, null),
-        (8, 5, 'Spring Cloud', 8, 0, '0', '0', null, null);
+insert into t_topic (id, pid_, title_,image_url,rotation_, sorted_, deleted_,published_)
+values  (1, 0, '首页',null,false, 1, 0,1),
+        (2, 0, 'Java',null,false, 2, 0,1),
+        (3, 2, 'Java基础',null,false, 3, 0,1),
+        (4, 2, 'JVM',null,false, 4, 0,1),
+        (5, 0, 'Spring',null,false, 5, 0,1 ),
+        (6, 5, 'Spring Framework',null,false, 6, 0,1 ),
+        (7, 5, 'Spring Boot',null,false, 7, 0 ,1),
+        (8, 5, 'Spring Cloud',null,false, 8, 0 ,1);
 
 
 insert into tblog.t_article (id, title_, content_, reprint_, reprint_url, topic_id, published_, deleted_, created_by, update_by, created_time, update_time)
