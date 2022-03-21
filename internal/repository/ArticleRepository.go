@@ -61,8 +61,9 @@ func (a *articleRepository) PubSubById(id uint64, value interface{}) error {
 
 func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) ([]modules.Article, int64)  {
 	var total int64 = 0
-	database.DB.Model(&modules.Article{}).Where( "topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Offset((curPage - 1)* pageSize).Limit(pageSize).Count(&total)
+	database.DB.Model(&modules.Article{}).Where( "topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Count(&total)
 	var artiles []modules.Article = nil
-	database.DB.Model(&modules.Article{}).Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Find(&artiles)
+
+	database.DB.Model(&modules.Article{}).Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Offset((curPage - 1)* pageSize).Limit(pageSize).Find(&artiles)
 	return artiles,total
 }

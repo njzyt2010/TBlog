@@ -56,9 +56,12 @@ func adminEngine(engine *gin.Engine) {
 func apiEngine(engine *gin.Engine) {
 	//专题
 	topic := api.TopicController
+	article:=api.ArticleController
 	apiV1 := engine.Group("/v1/api")
 	{
 		apiV1.GET("/topics", topic.GetTopicsOfBlog)  // 查询可见专题
-		apiV1.GET("/topic/list", topic.GetByTopicId) // 通过专题查询专题下文章
+
+		apiV1.GET("/article/list", article.GetByTopicId) // 通过专题查询专题下文章
+		apiV1.GET("/article/getById" , article.GetById) // 文章详细
 	}
 }
