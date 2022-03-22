@@ -61,3 +61,7 @@ func (a *articleService) PubSubById(id uint64) error {
 func (a *articleService) GetByPage(topicId uint64,curPage int ,pageSize int) ([]modules.Article,int64)  {
 	return repository.ArticleRepository.GetByPage(topicId,curPage,pageSize)
 }
+
+func (a *articleService) GetByTagIdPage(tagId uint64,curPage int ,pageSize int) ([]modules.Article,int64) {
+	return repository.ArticleRepository.GetByTagIdPage(tagId,curPage,pageSize)
+}

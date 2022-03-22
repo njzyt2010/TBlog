@@ -67,3 +67,11 @@ func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) (
 	database.DB.Model(&modules.Article{}).Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Offset((curPage - 1)* pageSize).Limit(pageSize).Find(&artiles)
 	return artiles,total
 }
+
+func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int)  ([]modules.Article, int64) {
+	var total int64 =0
+	database.DB.Raw("select count(distinct ta.id) from t_article ta where ta.id in ( select tat.article_id from t_article_tag tat where tat.tag_id=?) ",tagId).Scan(&total)
+	var artiles []modules.Article = nil
+	database.DB.Exec("select count(distinct ta.id) from t_article ta where ta.id in ( select tat.article_id from t_article_tag tat where tat.tag_id=? )" , tagId).Offset((curPage - 1)* pageSize).Limit(pageSize).Find(&artiles)
+	return artiles,total
+}

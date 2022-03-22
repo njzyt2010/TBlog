@@ -63,5 +63,7 @@ func apiEngine(engine *gin.Engine) {
 
 		apiV1.GET("/article/list", article.GetByTopicId) // 通过专题查询专题下文章
 		apiV1.GET("/article/getById" , article.GetById) // 文章详细
+		apiV1.GET("/article/getByTag" , article.GetByTag) // 文章详细
+
 	}
 }
