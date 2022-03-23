@@ -56,3 +56,6 @@ create table t_article_tag
     tag_id     bigint(20) comment '标签id',
     article_id bigint(20) comment '文章id'
 ) comment '文章-标签';
+
+
+alter table t_topic  add newer_ tinyint(1) default 0 not null comment '是否显示在最近更新';

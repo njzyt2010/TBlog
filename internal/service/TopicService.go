@@ -42,3 +42,7 @@ func (t *topicService) GetTopicsOfBlog() []modules.Topic {
 		return data
 	}
 }
+
+func (t *topicService) GetRotationTopic() []modules.Topic  {
+	return repository.TopicRepository.GetRotationTopic()
+}

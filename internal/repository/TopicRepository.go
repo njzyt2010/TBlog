@@ -58,3 +58,11 @@ func (t *topicRepository) GetTopicsOfBlog() ([]modules.Topic, error) {
 	return topics, nil
 }
 
+// 获取轮播栏目
+func (t *topicRepository) GetRotationTopic() []modules.Topic {
+	var topics []modules.Topic = nil
+	if err := database.DB.Model(&modules.Topic{}).Where("deleted_ = ?", false).Where("published_ = ?",true).Where("rotation_ =?",true).Find(&topics).Error ;err !=nil{
+		return nil
+	}
+	return topics
+}

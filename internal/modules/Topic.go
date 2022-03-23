@@ -13,6 +13,7 @@ type Topic struct {
 	ImageUrl  string `gorm:"column:image_url" json:"imageUrl"`   //栏目图片
 	Rotation  bool  `gorm:"column:rotation_" json:"rotation"`    //是否轮播栏目
 	Sorted    uint8  `gorm:"column:sorted_" json:"sorted"`       // 排序
+	Newer	bool	`gorm:"column:newer_" json:"newer"` // 栏目是否显示在最新更新tag上
 	Published bool   `gorm:"column:published_" json:"published"` //是否发布
 }
 

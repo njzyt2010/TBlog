@@ -72,3 +72,27 @@ func (a *articleController) GetByTag(c *gin.Context)  {
 		"result": result,
 	})
 }
+
+//查询最新数据
+func (a *articleController) GetNewer(c *gin.Context) {
+
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	curPage, _ := strconv.Atoi(c.Query("curPage"))
+
+	if pageSize == 0 {
+		pageSize = 10
+	}
+	if curPage == 0 {
+		curPage = 1
+	}
+
+	articles, total := service.ArticleService.GetNewer( curPage, pageSize)
+	result := make(map[string]interface{})
+	result["list"] = articles
+	result["total"] = total
+	c.JSON(http.StatusOK, gin.H{
+		"code":   "200",
+		"msg":    "请求成功",
+		"result": result,
+	})
+}

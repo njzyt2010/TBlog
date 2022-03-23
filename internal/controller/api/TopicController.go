@@ -24,4 +24,14 @@ func (t *topicController) GetTopicsOfBlog(c *gin.Context) {
 	})
 }
 
+// 获取轮播栏目
+func (t *topicController) GetRotationTopic(c *gin.Context)  {
+	topics := service.TopicService.GetRotationTopic()
+	c.JSON(http.StatusOK,gin.H{
+		"code":"200" ,
+		"msg":"查询成功",
+		"result":topics,
+	})
+}
+
 
