@@ -70,9 +70,9 @@ func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) (
 // 通过 tag查询文章
 func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int)  ([]modules.Article, int64) {
 	var total int64 =0
-	database.DB.Raw("select count(distinct ta.id) from t_article ta where ta.id in ( select tat.article_id from t_article_tag tat where tat.tag_id=?) ",tagId).Scan(&total)
+	database.DB.Raw("select count(distinct ta.id) from t_article ta where ta.deleted_=0 and ta.published_ = 1 and ta.id in ( select tat.id from t_article_tag tat where tat.tag_id = ? ) order by ta.update_time desc",tagId).Scan(&total)
 	var artiles []modules.Article = nil
-	database.DB.Exec("select count(distinct ta.id) from t_article ta where ta.id in ( select tat.article_id from t_article_tag tat where tat.tag_id=? )" , tagId).Offset((curPage - 1)* pageSize).Limit(pageSize).Find(&artiles)
+	database.DB.Raw("select distinct ta.id,ta.title_,ta.update_time,ta.topic_id from t_article ta where ta.deleted_=0 and ta.published_ = 1 and ta.id in ( select tat.id from t_article_tag tat where tat.tag_id = ? ) order by ta.update_time desc limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
 	return artiles,total
 }
 
@@ -81,6 +81,6 @@ func (a *articleRepository) GetNewer(curPage int,pageSize int) ([]modules. Artic
 var total int64 =0
 database.DB.Raw("select count(ta.id) from t_article ta where ta.deleted_=0 and ta.published_=1 and ta.topic_id in (select tt.id from t_topic tt where tt.published_=1 and tt.deleted_=0 and tt.newer_ =1  ) order by ta.update_time desc").Scan(&total)
 var artiles []modules.Article = nil
-database.DB.Exec("select ta.* from t_article ta where ta.deleted_=0 and ta.published_=1 and ta.topic_id in (select tt.id from t_topic tt where tt.published_=1 and tt.deleted_=0 and tt.newer_ =1  ) order by ta.update_time desc").Offset((curPage - 1)* pageSize).Limit(pageSize).Find(&artiles)
+database.DB.Raw("select ta.id,ta.title_,ta.update_time,ta.topic_id from t_article ta where ta.deleted_=0 and ta.published_=1 and ta.topic_id in (select tt.id from t_topic tt where tt.published_=1 and tt.deleted_=0 and tt.newer_ =1  ) order by ta.update_time desc limit ?,?",(curPage - 1)* pageSize,pageSize).Scan(&artiles)
 return artiles,total
 }

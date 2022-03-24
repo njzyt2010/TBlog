@@ -62,6 +62,7 @@ func (a *articleController) GetByTag(c *gin.Context)  {
 	if curPage == 0 {
 		curPage = 1
 	}
+
 	articles,total := service.ArticleService.GetByTagIdPage(uint64(tagId),curPage,pageSize);
 	result := make(map[string]interface{})
 	result["list"] = articles
@@ -75,7 +76,6 @@ func (a *articleController) GetByTag(c *gin.Context)  {
 
 //查询最新数据
 func (a *articleController) GetNewer(c *gin.Context) {
-
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	curPage, _ := strconv.Atoi(c.Query("curPage"))
 
