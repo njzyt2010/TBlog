@@ -83,11 +83,21 @@ func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int
 
 	if tagId > 0 {
 		database.DB.Raw("SELECT count(DISTINCT ta.id) " + sqlAppend,tagId).Scan(&total)
-		database.DB.Raw("select DISTINCT * "+sqlAppend+" limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
+		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.update_time,ta.topic_id "+sqlAppend+" limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
 	}else {
 		database.DB.Raw("SELECT count(DISTINCT ta.id) " + sqlAppend).Scan(&total)
 		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.update_time,ta.topic_id "+sqlAppend+" limit ?,?",(curPage - 1)* pageSize,pageSize).Scan(&artiles)
 	}
 
 	return artiles,total
+}
+
+// 示例查询上一篇和下一篇文章的方法
+func (a *articleRepository) GetLastAndNextArticle(id uint64)(modules.Article , modules.Article) {
+	var last modules.Article 
+	var next modules.Article
+	database.DB.Model(&modules.Article{}).Where("id < ?",id).Order("id DESC  ").Limit(1).Offset(0).Find(&last)
+	database.DB.Model(&modules.Article{}).Where("id > ?",id).Order("id ASC ").Limit(1).Offset(0).Find(&next)
+	
+	return last ,next 
 }

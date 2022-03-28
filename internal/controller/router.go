@@ -3,6 +3,7 @@ package controller
 import (
 	"TBlog/internal/controller/admin"
 	"TBlog/internal/controller/api"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -64,9 +65,8 @@ func apiEngine(engine *gin.Engine) {
 
 		apiV1.GET("/article/list", article.GetByTopicId) // 通过专题查询专题下文章
 		apiV1.GET("/article/getById", article.GetById)   // 文章详细
-		apiV1.GET("/article/getByTag", article.GetByTag) // 文章详细
-		apiV1.GET("/article/newer", article.GetNewer) // 最新发布
-
+		apiV1.GET("/article/getByTag", article.GetByTag) // 查询最新文章和文章分类
+		apiV1.GET("/article/GetLastAndNext",article.GetLastAndNext) // 通过当前文章获取上一篇和下一篇
 
 
 	}

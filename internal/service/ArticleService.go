@@ -65,3 +65,7 @@ func (a *articleService) GetByPage(topicId uint64,curPage int ,pageSize int) ([]
 func (a *articleService) GetByTagIdPage(tagId uint64,curPage int ,pageSize int) ([]modules.Article,int64) {
 	return repository.ArticleRepository.GetByTagIdPage(tagId,curPage,pageSize)
 }
+
+func (a *articleService) GetLastAndNextArticle(aId uint64) (modules.Article,modules.Article) {
+	return repository.ArticleRepository.GetLastAndNextArticle(aId)
+}

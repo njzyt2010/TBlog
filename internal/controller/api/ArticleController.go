@@ -1,6 +1,7 @@
 package api
 
 import (
+	"TBlog/internal/modules"
 	"TBlog/internal/service"
 	"net/http"
 	"strconv"
@@ -75,4 +76,19 @@ func (a *articleController) GetByTag(c *gin.Context)  {
 		"msg":    "请求成功",
 		"result": result,
 	})
+}
+
+func (a *articleController) GetLastAndNext(c *gin.Context) {
+	id,_ := strconv.Atoi( c.Query("id"))
+	if id > 0 {
+		var ret = make(map[string]modules.Article,2)
+		last,next := service.ArticleService.GetLastAndNextArticle(uint64(id))
+		ret["last"] = last 
+		ret["next"] = next
+		c.JSON(http.StatusOK,gin.H{
+			"code":"200" ,
+			"msg":"请求成功",
+			"result": ret,
+		})
+	}
 }
