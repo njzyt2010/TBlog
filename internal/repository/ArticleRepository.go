@@ -106,9 +106,6 @@ func (a *articleRepository) GetLastAndNextArticle(id uint64)(modules.Article , m
 func (a *articleRepository) GetNearPageByTopicIdAndArticleId( tid uint64,aid uint64) (modules.Article , modules.Article) {
 	var preArticle modules.Article 
 	var nextArticle modules.Article
-
-// 	SELECT * FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.topic_id =4 AND ta.id<2 ORDER BY ta.id DESC LIMIT 1 ;
-// SELECT * FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.topic_id =4 AND ta.id>2 ORDER BY ta.id ASC  LIMIT 1 ;
 	database.DB.Model(&modules.Article{}).Select("id, title_,topic_id").
 	Where("deleted_=0").Where("published_ = 1").Where("topic_id = ?",tid).Where("id < ?",aid).Order("id DESC ").Limit(1).Offset(0).Find(&preArticle)
 	database.DB.Model(&modules.Article{}).Select("id, title_,topic_id").
@@ -116,4 +113,36 @@ func (a *articleRepository) GetNearPageByTopicIdAndArticleId( tid uint64,aid uin
 	
 
 	return preArticle, nextArticle 
+}
+
+// 通过栏目id 和 文章id查询相近的文章
+func (a *articleRepository) GetNearPageByTagIdAndArticleId( tagId uint64,aid uint64) (modules.Article , modules.Article) {
+	var preArticle modules.Article 
+	var nextArticle modules.Article
+
+	// SELECT * FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id <13 AND id IN (
+	// 	SELECT tat.article_id  FROM t_article_tag tat WHERE tat.tag_id =1
+	// )   ORDER BY ta.id DESC LIMIT 1
+
+	var preDynamicSQL = "SELECT ta.id, ta.title_,ta.topic_id FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id < ? AND id IN ("
+	preDynamicSQL +="SELECT tat.article_id  FROM t_article_tag tat"
+	if tagId > 0 {
+		preDynamicSQL += "WHERE tat.tag_id = ?"
+	}
+	preDynamicSQL += ")   ORDER BY ta.id DESC LIMIT 1"
+
+	// SELECT * FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id >13 AND id IN (
+	// 	SELECT tat.article_id  FROM t_article_tag tat WHERE tat.tag_id =1
+	// )   ORDER BY ta.id ASC LIMIT 1
+	
+	if tagId >0 {
+		database.DB.Raw(preDynamicSQL,aid,tagId).Scan(&preArticle)
+	}
+
+	
+
+
+
+	
+	return preArticle,nextArticle
 }
