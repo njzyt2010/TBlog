@@ -92,3 +92,20 @@ func (a *articleController) GetLastAndNext(c *gin.Context) {
 		})
 	}
 }
+
+// 通过栏目和文章id查询上一篇和下一篇文章
+func (a *articleController) GetNearPageByTopicIdAndArticleId(c *gin.Context) {
+	tid,_ := strconv.Atoi(c.Query("tid"))
+	aid , _ := strconv.Atoi(c.Query("aid")) 
+	
+	var ret = make(map[string]modules.Article)
+	pre,next :=service.ArticleService.GetNearPageByTopicIdAndArticleId(uint64(tid),uint64(aid))
+	ret["pre"] = pre 
+	ret["next"] = next 
+
+	c.JSON(http.StatusOK,gin.H {
+		"code":"200" ,
+		"msg":"请求成功" , 
+		"result": ret ,
+	})
+}

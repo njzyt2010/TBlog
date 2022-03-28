@@ -67,7 +67,7 @@ func apiEngine(engine *gin.Engine) {
 		apiV1.GET("/article/getById", article.GetById)   // 文章详细
 		apiV1.GET("/article/getByTag", article.GetByTag) // 查询最新文章和文章分类
 		apiV1.GET("/article/GetLastAndNext",article.GetLastAndNext) // 通过当前文章获取上一篇和下一篇
-
+		apiV1.GET("/article/GetArticleByTidAndAid" , article.GetNearPageByTopicIdAndArticleId)
 
 	}
 }

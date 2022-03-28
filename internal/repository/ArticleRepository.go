@@ -101,3 +101,19 @@ func (a *articleRepository) GetLastAndNextArticle(id uint64)(modules.Article , m
 	
 	return last ,next 
 }
+
+// 通过栏目id 和 文章id查询相近的文章
+func (a *articleRepository) GetNearPageByTopicIdAndArticleId( tid uint64,aid uint64) (modules.Article , modules.Article) {
+	var preArticle modules.Article 
+	var nextArticle modules.Article
+
+// 	SELECT * FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.topic_id =4 AND ta.id<2 ORDER BY ta.id DESC LIMIT 1 ;
+// SELECT * FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.topic_id =4 AND ta.id>2 ORDER BY ta.id ASC  LIMIT 1 ;
+	database.DB.Model(&modules.Article{}).Select("id, title_,topic_id").
+	Where("deleted_=0").Where("published_ = 1").Where("topic_id = ?",tid).Where("id < ?",aid).Order("id DESC ").Limit(1).Offset(0).Find(&preArticle)
+	database.DB.Model(&modules.Article{}).Select("id, title_,topic_id").
+	Where("deleted_=0").Where("published_ = 1").Where("topic_id = ?",tid).Where("id > ?",aid).Order("id ASC ").Limit(1).Offset(0).Find(&nextArticle)
+	
+
+	return preArticle, nextArticle 
+}
