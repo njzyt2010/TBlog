@@ -3,6 +3,7 @@ package repository
 import (
 	"TBlog/internal/modules"
 	"TBlog/pkg/database"
+	"time"
 )
 
 type articleRepository struct {
@@ -54,8 +55,9 @@ func (a *articleRepository) GetById(id uint64) (*modules.Article, error) {
 	}
 	return article, nil
 }
-func (a *articleRepository) PubSubById(id uint64, value interface{}) error {
-	err := a.UpdateColumn(id, "published_", value)
+
+func (a *articleRepository) PubSubById(id uint64, value interface{}) error { 
+	err := database.DB.Exec("update t_article set published_ = ? ,published_time = ? where id=?",value,time.Now(),id).Error
 	return err
 }
 //通过栏目查询文章
@@ -69,18 +71,23 @@ func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) (
 }
 // 通过 tag查询文章
 func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int)  ([]modules.Article, int64) {
-	var total int64 =0
-	database.DB.Raw("select count(distinct ta.id) from t_article ta where ta.deleted_=0 and ta.published_ = 1 and ta.id in ( select tat.id from t_article_tag tat where tat.tag_id = ? ) order by ta.update_time desc",tagId).Scan(&total)
-	var artiles []modules.Article = nil
-	database.DB.Raw("select distinct ta.id,ta.title_,ta.update_time,ta.topic_id from t_article ta where ta.deleted_=0 and ta.published_ = 1 and ta.id in ( select tat.id from t_article_tag tat where tat.tag_id = ? ) order by ta.update_time desc limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
-	return artiles,total
-}
+	var sqlAppend = " FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.id IN ( SELECT tat.article_id  FROM t_article_tag tat "
 
-// 查询最近更新的数据
-func (a *articleRepository) GetNewer(curPage int,pageSize int) ([]modules. Article,int64){
-var total int64 =0
-database.DB.Raw("select count(ta.id) from t_article ta where ta.deleted_=0 and ta.published_=1 and ta.topic_id in (select tt.id from t_topic tt where tt.published_=1 and tt.deleted_=0 and tt.newer_ =1  ) order by ta.update_time desc").Scan(&total)
-var artiles []modules.Article = nil
-database.DB.Raw("select ta.id,ta.title_,ta.update_time,ta.topic_id from t_article ta where ta.deleted_=0 and ta.published_=1 and ta.topic_id in (select tt.id from t_topic tt where tt.published_=1 and tt.deleted_=0 and tt.newer_ =1  ) order by ta.update_time desc limit ?,?",(curPage - 1)* pageSize,pageSize).Scan(&artiles)
-return artiles,total
+	if tagId > 0 {
+		sqlAppend +=" WHERE tat.tag_id =?"
+	}
+	sqlAppend += ") ORDER BY ta.published_time DESC"
+
+	var total int64 =0
+	var artiles []modules.Article = nil
+
+	if tagId > 0 {
+		database.DB.Raw("SELECT count(DISTINCT ta.id) " + sqlAppend,tagId).Scan(&total)
+		database.DB.Raw("select DISTINCT * "+sqlAppend+" limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
+	}else {
+		database.DB.Raw("SELECT count(DISTINCT ta.id) " + sqlAppend).Scan(&total)
+		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.update_time,ta.topic_id "+sqlAppend+" limit ?,?",(curPage - 1)* pageSize,pageSize).Scan(&artiles)
+	}
+
+	return artiles,total
 }

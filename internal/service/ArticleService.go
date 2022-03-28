@@ -65,7 +65,3 @@ func (a *articleService) GetByPage(topicId uint64,curPage int ,pageSize int) ([]
 func (a *articleService) GetByTagIdPage(tagId uint64,curPage int ,pageSize int) ([]modules.Article,int64) {
 	return repository.ArticleRepository.GetByTagIdPage(tagId,curPage,pageSize)
 }
-// 查询最近更新的文章
-func (a *articleService) GetNewer(curPage int,pageSize int) ([]modules. Article,int64){
-	return repository.ArticleRepository.GetNewer(curPage,pageSize)
-}

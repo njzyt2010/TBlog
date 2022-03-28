@@ -59,3 +59,6 @@ create table t_article_tag
 
 
 alter table t_topic  add newer_ tinyint(1) default 0 not null comment '是否显示在最近更新';
+
+# 2022-03-28
+ALTER TABLE t_article ADD COLUMN published_time date comment '文章发布时间' ;
