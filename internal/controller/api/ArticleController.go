@@ -43,7 +43,7 @@ func (a *articleController) GetByTopicId(c *gin.Context) {
 }
 // 通过id查询文章
 func (a articleController) GetById(c *gin.Context)  {
-	articleId, _ := strconv.Atoi(c.Query("id"))
+	articleId, _ := strconv.Atoi(c.Param("id"))
 	article := service.ArticleService.GetById(uint64(articleId)) ;
 
 	c.JSON(http.StatusOK,gin.H{
@@ -107,5 +107,21 @@ func (a *articleController) GetNearPageByTopicIdAndArticleId(c *gin.Context) {
 		"code":"200" ,
 		"msg":"请求成功" , 
 		"result": ret ,
+	})
+}
+
+func (a *articleController) GetNearPageByTagIdAndArticleId(c *gin.Context) {
+	tagId,_ := strconv.Atoi(c.Query("tagId"))
+	aid, _ :=strconv.Atoi(c.Query("aid"))
+
+	var ret = make(map[string]modules.Article)
+	pre,next :=service.ArticleService.GetNearPageByTagIdAndArticleId(uint64(tagId),uint64(aid))
+	ret["pre"] = pre 
+	ret["next"] = next
+
+	c.JSON(http.StatusOK,gin.H{
+		"code":"200",
+		"msg" :"请求成功" , 
+		"result" : ret ,
 	})
 }

@@ -71,12 +71,12 @@ func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) (
 }
 // 通过 tag查询文章
 func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int)  ([]modules.Article, int64) {
-	var sqlAppend = " FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.id IN ( SELECT tat.article_id  FROM t_article_tag tat "
+	var sqlAppend = "FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.id IN ( SELECT tat.article_id  FROM t_article_tag tat "
 
 	if tagId > 0 {
-		sqlAppend +=" WHERE tat.tag_id =?"
+		sqlAppend +="WHERE tat.tag_id =? "
 	}
-	sqlAppend += ") ORDER BY ta.published_time DESC"
+	sqlAppend += ") ORDER BY ta.published_time DESC "
 
 	var total int64 =0
 	var artiles []modules.Article = nil
@@ -124,25 +124,26 @@ func (a *articleRepository) GetNearPageByTagIdAndArticleId( tagId uint64,aid uin
 	// 	SELECT tat.article_id  FROM t_article_tag tat WHERE tat.tag_id =1
 	// )   ORDER BY ta.id DESC LIMIT 1
 
-	var preDynamicSQL = "SELECT ta.id, ta.title_,ta.topic_id FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id < ? AND id IN ("
-	preDynamicSQL +="SELECT tat.article_id  FROM t_article_tag tat"
+	var preDynamicSQL = "SELECT ta.id, ta.title_,ta.topic_id FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id < ? AND id IN ( "
+	preDynamicSQL +="SELECT tat.article_id  FROM t_article_tag tat "
 	if tagId > 0 {
-		preDynamicSQL += "WHERE tat.tag_id = ?"
+		preDynamicSQL += "WHERE tat.tag_id = ? "
 	}
-	preDynamicSQL += ")   ORDER BY ta.id DESC LIMIT 1"
+	preDynamicSQL += ") ORDER BY ta.id DESC LIMIT 1" 
 
-	// SELECT * FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id >13 AND id IN (
-	// 	SELECT tat.article_id  FROM t_article_tag tat WHERE tat.tag_id =1
-	// )   ORDER BY ta.id ASC LIMIT 1
-	
+	var nextDynamicSQL  = "SELECT ta.id, ta.title_,ta.topic_id FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id > ? AND id IN ( "
+	nextDynamicSQL +="SELECT tat.article_id  FROM t_article_tag tat "
+	if tagId > 0 {
+		nextDynamicSQL += "WHERE tat.tag_id = ? "
+	}
+	nextDynamicSQL += ")   ORDER BY ta.id ASC LIMIT 1" 
 	if tagId >0 {
 		database.DB.Raw(preDynamicSQL,aid,tagId).Scan(&preArticle)
+		database.DB.Raw(nextDynamicSQL, aid,tagId).Scan(&nextArticle)
+	}else {
+		database.DB.Raw(preDynamicSQL,aid).Scan(&preArticle)
+		database.DB.Raw(nextDynamicSQL,aid).Scan(&nextArticle)
 	}
 
-	
-
-
-
-	
 	return preArticle,nextArticle
 }

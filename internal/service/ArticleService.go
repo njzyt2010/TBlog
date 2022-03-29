@@ -73,3 +73,7 @@ func (a *articleService) GetLastAndNextArticle(aId uint64) (modules.Article,modu
 func (a *articleService) GetNearPageByTopicIdAndArticleId(tid uint64,aid uint64)  (modules.Article,modules.Article){
 	return repository.ArticleRepository.GetNearPageByTopicIdAndArticleId(tid,aid)
 }
+
+func (a *articleService) GetNearPageByTagIdAndArticleId(tagId uint64,aid uint64)(modules.Article,modules.Article) {
+	return repository.ArticleRepository.GetNearPageByTagIdAndArticleId(tagId,aid)
+}
