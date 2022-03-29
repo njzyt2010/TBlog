@@ -83,10 +83,10 @@ func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int
 
 	if tagId > 0 {
 		database.DB.Raw("SELECT count(DISTINCT ta.id) " + sqlAppend,tagId).Scan(&total)
-		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.update_time,ta.topic_id "+sqlAppend+" limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
+		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.published_time,ta.topic_id "+sqlAppend+" limit ?,?", tagId,(curPage - 1)* pageSize,pageSize).Scan(&artiles)
 	}else {
 		database.DB.Raw("SELECT count(DISTINCT ta.id) " + sqlAppend).Scan(&total)
-		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.update_time,ta.topic_id "+sqlAppend+" limit ?,?",(curPage - 1)* pageSize,pageSize).Scan(&artiles)
+		database.DB.Raw("select DISTINCT ta.id,ta.title_,ta.published_time,ta.topic_id "+sqlAppend+" limit ?,?",(curPage - 1)* pageSize,pageSize).Scan(&artiles)
 	}
 
 	return artiles,total

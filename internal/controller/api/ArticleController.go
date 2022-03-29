@@ -20,7 +20,7 @@ func newArticleController() *articleController {
 var ArticleController = newArticleController()
 
 func (a *articleController) GetByTopicId(c *gin.Context) {
-	topicId, _ := strconv.Atoi(c.Query("id"))
+	topicId, _ := strconv.Atoi(c.Query("topicId"))
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	curPage, _ := strconv.Atoi(c.Query("curPage"))
 
