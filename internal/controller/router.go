@@ -64,7 +64,7 @@ func apiEngine(engine *gin.Engine) {
 		apiV1.GET("/topics/rotation", topic.GetRotationTopic) // 查询轮播栏目
 
 		apiV1.GET("/article/list", article.GetByTopicId) // 通过专题查询专题下文章
-		apiV1.GET("/article/:topic/:id", article.GetById)   // 文章详细
+		apiV1.GET("/topic/:topic/:id", article.GetById)   // 文章详细
 
 		
 		apiV1.GET("/article/getByTag", article.GetByTag) // 查询最新文章和文章分类

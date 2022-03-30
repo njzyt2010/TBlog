@@ -73,7 +73,7 @@ func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) (
 func (a *articleRepository) GetNavTreeByTopicId(topicId uint64) ([]modules.Article)  {
 	var artiles []modules.Article = nil
 
-	database.DB.Model(&modules.Article{}).Select("id,pid_,sorted_,title_").Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Find(&artiles)
+	database.DB.Model(&modules.Article{}).Select("id,pid_,sorted_,title_").Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Order("sorted_ ASC").Find(&artiles)
 	return artiles
 }
 // 通过 tag查询文章

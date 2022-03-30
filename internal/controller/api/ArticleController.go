@@ -129,11 +129,11 @@ func (a *articleController) GetNearPageByTagIdAndArticleId(c *gin.Context) {
 // 通过栏目id查询左侧导航
 func (a *articleController) GetArticleNavTree(c *gin.Context) {
 	topicId,_ :=strconv.Atoi(c.Param("topicId"))
-	artiles := service.ArticleService.GetNavTreeByTopicId(uint64(topicId))
+	articles := service.ArticleService.GetNavTreeByTopicId(uint64(topicId))
 	
 	c.JSON(http.StatusOK,gin.H{
 		"code":"200" ,
 		"msg":"查询成功",
-		"result" :artiles,
+		"result" :articles,
 	})
 }
