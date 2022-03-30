@@ -62,3 +62,7 @@ alter table t_topic  add newer_ tinyint(1) default 0 not null comment '是否显
 
 # 2022-03-28
 ALTER TABLE t_article ADD COLUMN published_time date comment '文章发布时间' ;
+
+# 2022-03-30
+ALTER TABLE t_article add COLUMN pid_ bigint(20) comment '文章树的父id' ;
+ALTER TABLE t_article add COLUMN sorted_ int(3) comment '排序' ;

@@ -72,5 +72,8 @@ func apiEngine(engine *gin.Engine) {
 		apiV1.GET("/article/GetArticleByTidAndAid" , article.GetNearPageByTopicIdAndArticleId) // 通过栏目id和文章id查询上一篇和下一篇
 		apiV1.GET("/article/GetArticleByTagIdAndAid",article.GetNearPageByTagIdAndArticleId) // 通过标签查询文章的上一篇和下一篇
 
+		
+		apiV1.GET("/article/nav/:topicId",article.GetArticleNavTree) // 通过专栏id查询左侧导航
+
 	}
 }

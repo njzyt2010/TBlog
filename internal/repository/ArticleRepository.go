@@ -69,6 +69,13 @@ func (a *articleRepository) GetByPage(topicId uint64,curPage int,pageSize int) (
 	database.DB.Model(&modules.Article{}).Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Offset((curPage - 1)* pageSize).Limit(pageSize).Find(&artiles)
 	return artiles,total
 }
+//通过栏目查询文章
+func (a *articleRepository) GetNavTreeByTopicId(topicId uint64) ([]modules.Article)  {
+	var artiles []modules.Article = nil
+
+	database.DB.Model(&modules.Article{}).Select("id,pid_,sorted_,title_").Where("topic_id = ? and published_ =? and deleted_ = ?", topicId,true,false).Find(&artiles)
+	return artiles
+}
 // 通过 tag查询文章
 func (a *articleRepository) GetByTagIdPage(tagId uint64,curPage int,pageSize int)  ([]modules.Article, int64) {
 	var sqlAppend = "FROM t_article ta WHERE ta.deleted_ =0 AND ta.published_ =1 AND ta.id IN ( SELECT tat.article_id  FROM t_article_tag tat "
@@ -119,10 +126,6 @@ func (a *articleRepository) GetNearPageByTopicIdAndArticleId( tid uint64,aid uin
 func (a *articleRepository) GetNearPageByTagIdAndArticleId( tagId uint64,aid uint64) (modules.Article , modules.Article) {
 	var preArticle modules.Article 
 	var nextArticle modules.Article
-
-	// SELECT * FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id <13 AND id IN (
-	// 	SELECT tat.article_id  FROM t_article_tag tat WHERE tat.tag_id =1
-	// )   ORDER BY ta.id DESC LIMIT 1
 
 	var preDynamicSQL = "SELECT ta.id, ta.title_,ta.topic_id FROM t_article ta WHERE ta.deleted_ = 0 AND published_ = 1 AND ta.id < ? AND id IN ( "
 	preDynamicSQL +="SELECT tat.article_id  FROM t_article_tag tat "

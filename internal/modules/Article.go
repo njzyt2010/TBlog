@@ -5,6 +5,8 @@ import "time"
 // 文章
 type Article struct {
 	Model
+	Pid			uint64 `gorm:"column:pid_" json:"pid"`// 文章的关联关系（主要是导航）
+	Sorted	   int8		`gorm:"column:sorted_" json:"sorted"` // 文章的排序
 	Title      string   `gorm:"column:title_" json:"title"`           //文章标题
 	Content    string   `gorm:"column:content_" json:"content"`       //内容
 	Reprint    *bool    `gorm:"column:reprint_" json:"reprint"`       // 是否为转载的文章

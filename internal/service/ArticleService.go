@@ -77,3 +77,6 @@ func (a *articleService) GetNearPageByTopicIdAndArticleId(tid uint64,aid uint64)
 func (a *articleService) GetNearPageByTagIdAndArticleId(tagId uint64,aid uint64)(modules.Article,modules.Article) {
 	return repository.ArticleRepository.GetNearPageByTagIdAndArticleId(tagId,aid)
 }
+func (a *articleService) GetNavTreeByTopicId(topicId uint64) ([]modules.Article) {
+	return repository.ArticleRepository.GetNavTreeByTopicId(topicId)
+}
