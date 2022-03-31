@@ -45,6 +45,13 @@ func (a *articleService) GetById(id uint64) *modules.Article {
 	if data, err := repository.ArticleRepository.GetById(id); err != nil {
 		return nil
 	} else {
+		if data.Pid >0 {
+			parentArticle,_:=repository.ArticleRepository.GetById(data.Pid)
+			if parentArticle !=nil {
+				data.Chapter = parentArticle.Sorted
+			}
+		}
+
 		return data
 	}
 }

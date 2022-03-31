@@ -14,7 +14,9 @@ type Article struct {
 	Published  *bool    `gorm:"column:published_" json:"published"`   //文章是否发布
 	PublishedTime time.Time `gorm:"column:published_time" json:"publishedTime"` // 文章发布时间
 	TopicId    uint64   `gorm:"column:topic_id" json:"topicId"`        //文章所属栏目
-	TagId      []uint64 `gorm:"-"`                                    //文章标签
+
+	TagId      []uint64 `gorm:"-"  json:"tagId"`                                    //文章标签
+	Chapter	int8 `gorm:"-" json:"chapter"`	// 章节
 }
 
 func (a Article) TableName() string {
