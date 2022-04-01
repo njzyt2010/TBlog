@@ -62,18 +62,26 @@ func apiEngine(engine *gin.Engine) {
 	{
 		apiV1.GET("/topics", topic.GetTopicsOfBlog)           // 查询可见专题
 		apiV1.GET("/topics/rotation", topic.GetRotationTopic) // 查询轮播栏目
+		apiV1.GET("/article/nav/:topicId",article.GetArticleNavTree) // 通过专栏id查询左侧导航
+
+		apiV1.GET("/tag/:tagId/:curPage/:pageSize",article.GetByTag)
+		apiV1.GET("/tag/:tagId", article.GetByTag) // 查询最新文章和文章分类列表
+		apiV1.GET("/tag/", article.GetByTag) // 查询最新文章和文章分类列表
+
+
+
+
+		
 
 		apiV1.GET("/article/list", article.GetByTopicId) // 通过专题查询专题下文章
 		apiV1.GET("/topic/:topic/:id", article.GetById)   // 文章详细
-
 		
-		apiV1.GET("/article/getByTag", article.GetByTag) // 查询最新文章和文章分类
 		apiV1.GET("/article/GetLastAndNext",article.GetLastAndNext) // 通过当前文章获取上一篇和下一篇
 		apiV1.GET("/article/GetArticleByTidAndAid" , article.GetNearPageByTopicIdAndArticleId) // 通过栏目id和文章id查询上一篇和下一篇
 		apiV1.GET("/article/GetArticleByTagIdAndAid",article.GetNearPageByTagIdAndArticleId) // 通过标签查询文章的上一篇和下一篇
 
 		
-		apiV1.GET("/article/nav/:topicId",article.GetArticleNavTree) // 通过专栏id查询左侧导航
-
+		
+		
 	}
 }

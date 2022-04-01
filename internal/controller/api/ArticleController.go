@@ -56,16 +56,22 @@ func (a articleController) GetById(c *gin.Context)  {
 
 // 通过tagId查询最新文章，如果tagId为空，则为查询最新发布
 func (a *articleController) GetByTag(c *gin.Context)  {
-	tagId,_ := strconv.Atoi(c.Query("tagId"))
-	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
-	curPage, _ := strconv.Atoi(c.Query("curPage"))
+	var tagId = 0
+	tagIdStr := c.Param("tagId")
+	if len(tagIdStr) >0 {
+		tagId,_ = strconv.Atoi(tagIdStr)
+	} 
+	pageSizeStr := c.Param("pageSize") 
+	curPageStr := c.Param("curPage")
 
-	if pageSize == 0 {
-		pageSize = 10
+	if len(pageSizeStr) == 0 {
+		pageSizeStr = "10"
 	}
-	if curPage == 0 {
-		curPage = 1
+	if len(curPageStr) == 0 {
+		curPageStr = "1"
 	}
+	curPage,_ :=strconv.Atoi(curPageStr)
+	pageSize,_ :=strconv.Atoi(pageSizeStr)
 
 	articles,total := service.ArticleService.GetByTagIdPage(uint64(tagId),curPage,pageSize);
 	result := make(map[string]interface{})
