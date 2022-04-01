@@ -64,9 +64,11 @@ func apiEngine(engine *gin.Engine) {
 		apiV1.GET("/topics/rotation", topic.GetRotationTopic) // 查询轮播栏目
 		apiV1.GET("/article/nav/:topicId",article.GetArticleNavTree) // 通过专栏id查询左侧导航
 
-		apiV1.GET("/tag/:tagId/:curPage/:pageSize",article.GetByTag)
-		apiV1.GET("/tag/:tagId", article.GetByTag) // 查询最新文章和文章分类列表
-		apiV1.GET("/tag/", article.GetByTag) // 查询最新文章和文章分类列表
+		//apiV1.GET("/tag/:tagId/:pageSize/:curPage",article.GetByTag)
+		apiV1.GET("/tag/:tagId/:curPage",article.GetByTag)
+		apiV1.GET("/tag/:tagId/article/:id",article.GetById)
+		//apiV1.GET("/tag/:tagId", article.GetByTag) // 查询最新文章和文章分类列表
+		//apiV1.GET("/tag/", article.GetByTag) // 查询最新文章和文章分类列表
 
 
 
